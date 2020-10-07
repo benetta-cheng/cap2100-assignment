@@ -19,6 +19,23 @@ Route::get('/', function () {
 Route::get('/layout', function () {
     return view('layout.layout');
 });
+Route::get('/dashboard', function () {
+    $dashboardTestData = [
+        "newUpdates" => [
+            ["update" => "Mr Tang Yang Tze has approved your leave", "leaveId" => "SL12345"],
+            ["update" => "Ms Ng Ruoh Ling has approved your leave", "leaveId" => "SL12345"],
+            ["update" => "Ms Fui Chie Shee has approved your leave", "leaveId" => "SL12345"],
+            ["update" => "Ms Lusiana Syaiful has approved your leave", "leaveId" => " SL12344"],
+        ],
+        "approvalStatuses" => [
+            ["course" => "IBM2104", "leaveId" => "SL12345", "status" => "APPROVED"],
+            ["course" => "IBM2105", "leaveId" => "SL12345", "status" => "REJECTED"],
+            ["course" => "CAP2100", "leaveId" => "SL12345", "status" => "PENDING"],
+            ["course" => "IBM2104", "leaveId" => "SL12345", "status" => "REJECTED"]
+        ]
+    ];
+    return view('dashboard', $dashboardTestData);
+});
 Route::get('/leave', function () {
     // This is just test data in the form of an array, the actual code will most likely return an object (Changes from array to object need to be made in leave.blade.php in that case)
     $leaveTestData = [
