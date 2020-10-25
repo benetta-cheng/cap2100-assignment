@@ -115,8 +115,8 @@ Route::get('/ApplicationForm', function () {
 
 Route::get('/ApplicationConfirmation', function () {
 
-     // This is just test data in the form of an array, the actual code will most likely return an object (Changes from array to object need to be made in leave.blade.php in that case)
-     $leaveTestData = [
+    // This is just test data in the form of an array, the actual code will most likely return an object (Changes from array to object need to be made in leave.blade.php in that case)
+    $leaveTestData = [
         "userRole" => "Lecturer", // Will probably be changed when proper authentication is setup
         "details" => [
             "leaveId" => "SL123456",
