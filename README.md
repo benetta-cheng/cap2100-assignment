@@ -4,7 +4,9 @@
 2. Run these commands in order within the CAP2100-System folder  
    a. `composer install`  
    b. `copy .env.example .env`  
-   c. `php artisan key:generate`
+   c. `php artisan key:generate`  
+   d. `php artisan make:database` (After turning on the MySQL server)  
+   e. `php artisan migrate`
 
 # Code Formatting
 
