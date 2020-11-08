@@ -18,13 +18,8 @@ class LeaveAction extends Model
         return $this->belongsTo('App\Models\LeaveApplication', 'leave_id', 'leave_id');
     }
 
-    public function staff()
+    public function session()
     {
-        return $this->belongsTo('App\Models\Staff', 'staff_id', 'staff_id');
-    }
-
-    public function course()
-    {
-        return $this->belongsTo('App\Models\Course', 'course_id', 'course_id');
+        return $this->belongsTo('App\Models\Session', null, 'session_id');
     }
 }

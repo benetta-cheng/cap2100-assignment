@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
+    protected $table = 'course';
     protected $primaryKey = "course_id";
     public $incrementing = false;
     protected $keyType = "string";
 
-    public function Course()
+    public function section()
     {
-        return $this->hasMany('App\Models\Course', 'course_id');
+        return $this->hasMany('App\Models\Section', null, 'course_id');
     }
 }

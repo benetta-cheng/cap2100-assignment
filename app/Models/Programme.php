@@ -7,16 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Programme extends Model
 {
-    use HasFactory;
-
-    //@var array
-    //Declaring attributes
+    protected $table = 'programme';
     protected $primaryKey = 'programme_id';
     protected $keyType = 'string';
     public $incrementing = 'false';
 
-    //Many to one relationship from Staff model to Programme model
-    public function staff() {
-        return $this->belongsTo('App\Models\staff', 'programme_id');
+    public function headOfProgramme()
+    {
+        return $this->belongsTo('App\Models\Staff', 'head_of_programme', 'staff_id');
     }
 }
