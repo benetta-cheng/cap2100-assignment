@@ -22,7 +22,7 @@ class Student extends Model
         return $this->hasMany('App\Models\Enrolment', 'student_id', 'student_id');
     }
 
-    public function programme()
+    public function studentProgramme()
     {
         return $this->belongsTo('App\Models\Programme', 'programme', 'programme_id');
     }
