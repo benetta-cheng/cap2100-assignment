@@ -16,6 +16,7 @@ class CreateSessionTable extends Migration
         Schema::create('session', function (Blueprint $table) {
             $table->string('session_id')->primary();
             $table->string('section_id');
+            $table->string('day_of_week');
             $table->time('start_time');
             $table->time('end_time');
             $table->timestamps();

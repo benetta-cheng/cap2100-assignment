@@ -20,6 +20,8 @@ class CreateLeaveApplicationTable extends Migration
             $table->string('start_date');
             $table->string('end_date');
             $table->string('status');
+            $table->longText('reasons');
+            $table->string('supporting_documents');
             $table->timestamps();
         });
     }

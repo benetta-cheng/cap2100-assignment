@@ -19,6 +19,7 @@ class CreateLeaveActionTable extends Migration
             $table->string('course_id');
             $table->string('staff_authority');
             $table->string('staff_status');
+            $table->longText('remarks');
             $table->timestamps();
         });
     }

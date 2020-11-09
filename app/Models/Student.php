@@ -16,4 +16,9 @@ class Student extends Model
     {
         return $this->hasMany('App\Models\LeaveApplication', null, 'student_id');
     }
+
+    public function programme()
+    {
+        return $this->belongsTo('App\Models\Programme', 'programme', 'programme_id');
+    }
 }

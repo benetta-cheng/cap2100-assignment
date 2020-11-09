@@ -16,4 +16,9 @@ class Programme extends Model
     {
         return $this->belongsTo('App\Models\Staff', 'head_of_programme', 'staff_id');
     }
+
+    public function student()
+    {
+        return $this->hasMany('\App\Models\Student', 'programme_id', 'programme_id');
+    }
 }
