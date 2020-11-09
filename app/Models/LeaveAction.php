@@ -20,6 +20,6 @@ class LeaveAction extends Model
 
     public function session()
     {
-        return $this->belongsTo('App\Models\Session', null, 'session_id');
+        return $this->belongsTo('App\Models\Session', 'session_id', 'session_id');
     }
 }

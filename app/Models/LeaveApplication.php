@@ -18,7 +18,7 @@ class LeaveApplication extends Model
 
     public function student()
     {
-        return $this->belongsTo('App\Models\Student', null, 'student_id');
+        return $this->belongsTo('App\Models\Student', 'student_id', 'student_id');
     }
 
     public function leaveActions()
