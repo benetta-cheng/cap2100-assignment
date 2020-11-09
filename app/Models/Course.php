@@ -14,6 +14,6 @@ class Course extends Model
 
     public function section()
     {
-        return $this->hasMany('App\Models\Section', null, 'course_id');
+        return $this->hasMany('App\Models\Section', 'course_id', 'course_id');
     }
 }

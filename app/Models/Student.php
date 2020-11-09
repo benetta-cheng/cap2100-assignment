@@ -14,7 +14,12 @@ class Student extends Model
 
     public function leaveApplication()
     {
-        return $this->hasMany('App\Models\LeaveApplication', null, 'student_id');
+        return $this->hasMany('App\Models\LeaveApplication', 'student_id', 'student_id');
+    }
+
+    public function enrolments()
+    {
+        return $this->hasMany('App\Models\Enrolment', 'student_id', 'student_id');
     }
 
     public function programme()

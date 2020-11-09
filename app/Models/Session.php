@@ -14,11 +14,11 @@ class Session extends Model
 
     public function section()
     {
-        return $this->belongsTo('App\Models\Section', null, 'section_id');
+        return $this->belongsTo('App\Models\Section', 'section_id', 'section_id');
     }
 
     public function leaveActions()
     {
-        return $this->hasMany('App\Models\LeaveAction', null, 'session_id');
+        return $this->hasMany('App\Models\LeaveAction', 'session_id', 'session_id');
     }
 }

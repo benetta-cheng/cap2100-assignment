@@ -14,16 +14,21 @@ class Section extends Model
 
     public function course()
     {
-        return $this->belongsTo('App\Models\Course', null, 'course_id');
+        return $this->belongsTo('App\Models\Course', 'course_id', 'course_id');
     }
 
     public function session()
     {
-        return $this->hasMany('App\Models\Session', null, 'section_id');
+        return $this->hasMany('App\Models\Session', 'section_id', 'section_id');
     }
 
     public function staff()
     {
-        return $this->belongsTo('App\Models\Staff', null, 'staff_id');
+        return $this->belongsTo('App\Models\Staff', 'lecturer_id', 'staff_id');
+    }
+
+    public function enrolments()
+    {
+        return $this->hasMany('App\Models\Enrolment', 'section_id', 'section_id');
     }
 }
