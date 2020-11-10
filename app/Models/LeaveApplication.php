@@ -25,4 +25,9 @@ class LeaveApplication extends Model
     {
         return $this->hasMany('App\Models\LeaveAction', 'leave_id', 'leave_id');
     }
+
+    public function supportingDocuments()
+    {
+        return $this->hasMany('App\Models\SupportingDocument', 'leave_id', 'leave_id');
+    }
 }
