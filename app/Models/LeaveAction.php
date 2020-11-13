@@ -22,4 +22,18 @@ class LeaveAction extends Model
     {
         return $this->belongsTo('App\Models\Session', 'session_id', 'session_id');
     }
+
+    public function completed()
+    {
+        return $this->staff_status === 'approved' || $this->staff_status === 'rejected';
+    }
+
+    public function setStatus($status, $remark = null)
+    {
+        $this->staff_status = $status;
+        if ($remark === null) {
+            $this->remarks = "";
+        }
+        $this->save();
+    }
 }

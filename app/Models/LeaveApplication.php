@@ -30,4 +30,15 @@ class LeaveApplication extends Model
     {
         return $this->hasMany('App\Models\SupportingDocument', 'leave_id', 'leave_id');
     }
+
+    public function completed()
+    {
+        return $this->status === 'cancelled' || $this->status === 'approved' || $this->status === 'rejected';
+    }
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        $this->save();
+    }
 }

@@ -22,8 +22,7 @@
 @endsection
 
 @section('content')
-{{-- userRole will probably be removed when proper authentication is setup --}}
-@if ($details['leaveStatus'] != "APPROVED" && $details['leaveStatus'] != "REJECTED")
+@if (!$leave->completed() && $userLeaveStatus != "APPROVED" && $userLeaveStatus != "REJECTED")
 @if ($userRole == "Student")
 {{-- Cancellation Modal --}}
 <div class="modal fade" id="cancellationModal" tabindex="-1" role="dialog" aria-labelledby="cancellationModalTitle"
@@ -41,7 +40,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">No, go back</button>
-                <button type="button" class="btn btn-danger">Cancel Leave Application</button>
+                <form action="{{$leave->leave_id}}/cancel" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-danger">Cancel Leave Application</button>
+                </form>
             </div>
         </div>
     </div>
@@ -63,7 +65,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">No, go back</button>
-                <button type="button" class="btn btn-success">Confirm Approval</button>
+                <form action="{{$leave->leave_id}}/approve" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-success">Confirm Approval</button>
+                </form>
             </div>
         </div>
     </div>
@@ -79,20 +84,23 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="remarks">Remarks</label>
-                    <textarea class="form-control" id="remarks" rows="3"></textarea>
+            <form action="{{$leave->leave_id}}/reject" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="remarks">Remarks</label>
+                        <textarea class="form-control" id="remarks" name="remarks" rows="3"></textarea>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No, go back</button>
-                <button type="button" class="btn btn-danger">Confirm Rejection</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No, go back</button>
+                    <button type="submit" class="btn btn-danger">Confirm Rejection</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-@if($details['leaveStatus'] == "PENDING")
+@if($userLeaveStatus == "PENDING")
 {{-- Meet Student Modal --}}
 <div class="modal fade" id="meetStudentModal" tabindex="-1" role="dialog" aria-labelledby="meetStudentModalTitle"
     aria-hidden="true">
@@ -104,16 +112,19 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="remarks">Remarks</label>
-                    <textarea class="form-control" id="remarks" rows="3"></textarea>
+            <form action="{{$leave->leave_id}}/meetStudent" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="remarks">Remarks</label>
+                        <textarea class="form-control" id="remarks" name="remarks" rows="3"></textarea>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No, go back</button>
-                <button type="button" class="btn btn-warning">Send Request</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No, go back</button>
+                    <button type="submit" class="btn btn-warning">Send Request</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -122,22 +133,32 @@
 @endif
 <div class="container">
     <div class="row my-4">
-        <h3 class="col-8">STATUS DETAILS ({{$details['leaveStatus']}})</h3>
+        <h3 class="col-8">STATUS DETAILS ({{$leaveStatus}})</h3>
         <div class="col-md-4 d-flex justify-content-md-end">
-            {{-- userRole will probably be removed when proper authentication is setup --}}
-            @if ($details['leaveStatus'] != "APPROVED" && $details['leaveStatus'] != "REJECTED")
+            @if (!$leave->completed() && $userLeaveStatus != "APPROVED" && $userLeaveStatus != "REJECTED" &&
+            $userLeaveStatus != "CANCELLED")
             @if ($userRole == "Student")
             <button class="btn btn-danger" data-toggle="modal" data-target="#cancellationModal">Cancel Leave</button>
             @else
             <div class="btn-group" role="group" aria-label="Review Leave Actions">
                 <button class="btn btn-success" data-toggle="modal" data-target="#approvalModal">Approve</button>
-                @if($details['leaveStatus'] == "PENDING")
+                @if($userLeaveStatus == "PENDING")
                 <button class="btn btn-warning" data-toggle="modal" data-target="#meetStudentModal">Meet
                     Student</button>
                 @endif
                 <button class="btn btn-danger" data-toggle="modal" data-target="#rejectionModal">Reject</button>
             </div>
             @endif
+
+            @elseif ($userRole != "Student")
+            <p><em>
+                    @if ($userLeaveStatus === 'APPROVED' || $userLeaveStatus === 'REJECTED')
+                    You have recommended the {{$userLeaveStatus === 'APPROVED' ? "approval" : "rejection"}} of this
+                    leave
+                    @else
+                    You did not recommend any action for this leave
+                    @endif
+                </em></p>
             @endif
         </div>
     </div>
@@ -145,37 +166,37 @@
         <div class="col">
             <div class="row">
                 <div class="col-md-4 col-lg-3 pr-0">Leave ID:</div>
-                <div class="col pl-md-0">{{$details['leaveId']}}</div>
+                <div class="col pl-md-0">{{$leave->leave_id}}</div>
             </div>
             <div class="row">
                 <div class="col-md-4 col-lg-3 pr-0">Name:</div>
-                <div class="col pl-md-0">{{$details['studentName']}}</div>
+                <div class="col pl-md-0">{{$leave->student->name}}</div>
             </div>
             <div class="row">
                 <div class="col-md-4 col-lg-3 pr-0">Session:</div>
-                <div class="col pl-md-0">{{$details['session']}}</div>
+                <div class="col pl-md-0">{{$leave->student->academic_session}}</div>
             </div>
             <div class="row">
                 <div class="col-md-4 col-lg-3 pr-0">Contact No:</div>
-                <div class="col pl-md-0">{{$details['contact']}}</div>
+                <div class="col pl-md-0">{{$leave->student->contact_num}}</div>
             </div>
             <div class="row">
                 <div class="col-md-4 col-lg-3 pr-0">Address:</div>
-                <div class="col pl-md-0">{{$details['address']}}</div>
+                <div class="col pl-md-0">{{$leave->student->address}}</div>
             </div>
         </div>
         <div class="col">
             <div class="row">
                 <div class="col-md-4 px-0">Matriculation No:</div>
-                <div class="col pl-0">{{$details['studentMatricId']}}</div>
+                <div class="col pl-0">{{$leave->student->student_id}}</div>
             </div>
             <div class="row">
                 <div class="col-md-4 px-0">IC/Passport No:</div>
-                <div class="col pl-0">{{$details['studentId']}}</div>
+                <div class="col pl-0">{{$leave->student->ic_num}}</div>
             </div>
             <div class="row">
                 <div class="col-md-4 px-0">Programme:</div>
-                <div class="col pl-0">{{$details['programme']}}</div>
+                <div class="col pl-0">{{$leave->student->studentProgramme->programme_name}}</div>
             </div>
         </div>
     </div>
@@ -186,11 +207,11 @@
                 <div class="list-group list-group-flush">
                     <div class="list-group-item d-flex justify-content-between">
                         <span class="ml-4">Leave Type</span>
-                        <span>{{$details['leaveType']}}</span>
+                        <span>{{$leave->leave_type}}</span>
                     </div>
                     <div class="list-group-item d-flex justify-content-between">
                         <span class="ml-4">Absent Period</span>
-                        <span>{{$details['leavePeriod']}}</span>
+                        <span>{{$leave->start_date . " - " . $leave->end_date}}</span>
                     </div>
                     <div class="list-group-item">
                         <div class="row collapsed" data-toggle="collapse" data-target="#collapseReason"
@@ -201,7 +222,7 @@
                             <span class="col p-0">Reasons</span>
                         </div>
                         <div class="collapse" id="collapseReason">
-                            <p class="mt-1 ml-4">{{$details['reason']}}</p>
+                            <p class="mt-1 ml-4">{{$leave->reasons}}</p>
                         </div>
                     </div>
                     <div class="list-group-item container">
@@ -214,8 +235,11 @@
                         </div>
                         <div class="collapse" id="collapseDocuments">
                             <ul class="mt-1 ml-4 list-unstyled">
-                                @foreach ($details['supportingDocuments'] as $documentDetails)
-                                <li><a href="{{$documentDetails['link']}}">{{$documentDetails['name']}}</a></li>
+                                @foreach ($leave->supportingDocuments as $supportingDocument)
+                                <li>
+                                    <a href="{{$leave->leave_id . '/supportingDocuments/' . $supportingDocument->id}}">
+                                        {{$supportingDocument->filename}}</a>
+                                </li>
                                 @endforeach
                             </ul>
                         </div>
@@ -230,7 +254,7 @@
                         </div>
                         <div class="collapse" id="collapseClasses">
                             <ul class="mt-1 ml-4 list-unstyled">
-                                @foreach ($details['affectedClasses'] as $className)
+                                @foreach ($affectedClasses as $className)
                                 <li>{{$className}}</li>
                                 @endforeach
                             </ul>
@@ -247,7 +271,7 @@
                 <div class="card-header"><span class="ml-4">APPROVAL STATUS</span></div>
                 <div class="list-group list-group-flush">
                     @foreach ($approvalStatus as $approvalDetails)
-                    @isset ($approvalDetails['remarks'])
+                    @if (!empty($approvalDetails['remarks']))
                     <div class="list-group-item container">
                         <div class="row collapsed" data-toggle="collapse" data-target="#collapseStatus{{$loop->index}}"
                             aria-expanded="false" aria-controls="collapseStatus{{$loop->index}}">
@@ -263,14 +287,13 @@
                             <p class="mt-1 ml-4">{{$approvalDetails['remarks']}}</p>
                         </div>
                     </div>
-                    @endisset
-                    @empty($approvalDetails['remarks'])
+                    @else
                     <div class="list-group-item d-flex justify-content-between">
                         <span class="ml-4">{{$approvalDetails['approver']}}</span>
                         <span class="text-{{$approvalDetails['status'] == 'APPROVED' ? 'success' : ($approvalDetails['status'] == 'REJECTED' ? 'danger' : 'warning')}}
                         ">{{$approvalDetails['status']}}</span>
                     </div>
-                    @endempty
+                    @endif
                     @endforeach
                 </div>
             </div>
