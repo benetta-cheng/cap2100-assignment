@@ -15,7 +15,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware('guest:staff,students');
+
+Route::post('/login', 'App\Http\Controllers\AuthenticationController@login')->middleware('guest:staff,students');
+Route::get('/logout', 'App\Http\Controllers\AuthenticationController@logout')->middleware('auth:staff,students');
+
 Route::get('/layout', function () {
     return view('layout.layout');
 });

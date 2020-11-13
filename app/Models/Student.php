@@ -2,15 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Student extends Model
+class Student extends Authenticatable
 {
     protected $table = 'student';
     protected $primaryKey = 'student_id';
     public $incrementing = false;
     protected $keyType = 'string';
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
     public function leaveApplication()
     {
