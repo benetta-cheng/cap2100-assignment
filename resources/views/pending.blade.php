@@ -18,13 +18,13 @@
                 <label for="dateApplied" class="mr-sm-2">Date of Application :</label>
                 <div class="row">
                     <div class="col input-group date" id="datetimepicker1" data-target-input="nearest">
-                        <input id="dateApplied" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" placeholder="From"/>
+                        <input name="leaveDateFrom" id="dateApplied" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" placeholder="From"/>
                         <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
                     </div>
                     <div class="col input-group date" id="datetimepicker2" data-target-input="nearest">
-                        <input id="dateApplied" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" placeholder="To"/>
+                        <input name="leaveDateTo" id="dateApplied" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" placeholder="To"/>
                         <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
@@ -33,7 +33,7 @@
             </div>
             <div class="col">
                 <label for="approvalStatus" class="mr-sm-2">Course:</label>
-                <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" placeholder="Course Name">
+                <input name='course'type="text" class="form-control" aria-label="Text input with segmented dropdown button" placeholder="Course ID">
             </div>
         </div>
         <div class="row my-4">
@@ -53,14 +53,14 @@
             </thead>
             <tbody>
                 @forelse ($leaves as $leave)
-                    <tr>
+                    <tr style="cursor:pointer" onclick="window.location='leave/{{$leave['leaveId']}}';">
                         <td>{{$leave['leaveId']}}</td>
-                        <td class="text-center">{{$leave['courseId']}}</td>
+                        <td class="text-center">{{$section['course_id']}}</td>
                         <td class="text-center">{{$leave['student']}}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="3">There is no history</td>
+                        <td colspan="3">There is no pending applications</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -69,21 +69,7 @@
     <div class="row">
         <nav class="col" aria-label="Page navigation">
             <ul class="pagination justify-content-end">
-                <li class="page-item @if($pageData['currentPage'] == 1) disabled @endif">
-                    <a class="page-link" href="#" @if($pageData['currentPage'] == 1) tabindex="-1" @endif>Previous</a>
-                </li>
-                @for ($i = 1; $i <= $pageData['maxPage']; $i++)
-                    @if ($i == $pageData['currentPage'])
-                        <li class="page-item active">
-                            <a class="page-link" href="#">{{$i}}<span class="sr-only">(current)</span></a>
-                        </li>
-                    @else
-                    <li class="page-item"><a class="page-link" href="#">{{$i}}</a></li>
-                    @endif
-                @endfor
-                <li class="page-item @if($pageData['currentPage'] == $pageData['maxPage']) disabled @endif">
-                    <a class="page-link" href="#" @if($pageData['currentPage'] == $pageData['maxPage']) tabindex="-1" @endif>Next</a>
-                </li>
+                {{$leaves->links()}}
             </ul>
         </nav>
     </div>

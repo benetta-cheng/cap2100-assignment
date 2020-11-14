@@ -18,13 +18,13 @@
                 <label for="dateApplied" class="mr-sm-2">Date Applied:</label>
                 <div class="row">
                     <div class="col input-group date" id="datetimepicker1" data-target-input="nearest">
-                        <input id="dateApplied" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" placeholder="From"/>
+                        <input name="leaveDateFrom" id="dateApplied" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" placeholder="From"/>
                         <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
                     </div>
                     <div class="col input-group date" id="datetimepicker2" data-target-input="nearest">
-                        <input id="dateApplied" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" placeholder="To"/>
+                        <input name="leaveDateTo" id="dateApplied" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" placeholder="To"/>
                         <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
@@ -32,17 +32,15 @@
                 </div>
             </div>
             <div class="col">
-                <div class="dropdown">
-                    <label for="approvalStatus" class="mr-sm-2">Approval Status:</label>
-                    <button class="btn btn-block btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown">Status</button>
-                    <div class="dropdown-menu btn-block">
-                        <a class="dropdown-item" href="#">Approved</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Pending</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Rejected</a>
-                    </div>
-                </div>
+                <div class="form-group">
+                    <label for="approvalStatus">Approval Status:</label>
+                    <select name="approvalStatus" class="form-control" id="approvalStatus" aria-placeholder="Status">
+                      <option style="display:none" disabled selected value>Status</option>
+                      <option>Approved</option>
+                      <option>Pending</option>
+                      <option>Rejected</option>
+                    </select>
+                  </div>
             </div>
         </div>
         @if ($userRole == 'Student')
@@ -50,7 +48,7 @@
             <div class="col-10">
                 <div class="form-group mb-0">
                     <label for="leaveId" class="mr-sm-2">Leave ID:</label>
-                    <input class="form-control" placeholder="Leave ID">
+                    <input name="leaveId" class="form-control" placeholder="Leave ID">
                 </div>
             </div>
             <div class="col d-flex align-items-end justify-content-end">
@@ -62,13 +60,13 @@
             <div class="col">
                 <div class="form-group">
                     <label for="leaveId" class="mr-sm-2">Name:</label>
-                    <input class="form-control" placeholder="Name">
+                    <input name="name" class="form-control" placeholder="Name">
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label for="leaveId" class="mr-sm-2">Course:</label>
-                    <input class="form-control" placeholder="Course Name">
+                    <input name="course" class="form-control" placeholder="Course Name">
                 </div>
             </div>
         </div>
@@ -94,14 +92,14 @@
             </thead>
             <tbody>
             @forelse ($leaves as $leave)
-                <tr>
+                <tr style="cursor:pointer" onclick="window.location='leave/{{$leave['leaveId']}}';">
                     <td>{{$leave['leaveId']}}</td>
                     @if ($userRole != 'Student')
                     <td class="text-center">{{$leave['courseId']}}</td>
                     <td class="text-center">{{$leave['student']}}</td>
                     @endif
-                    <td class="text-center text-{{$leave['approvalStatus'] == 'APPROVED' ? 'success' : ($leave['approvalStatus'] == 'REJECTED' ? 'danger' : 'warning') }}">{{$leave['approvalStatus']}}</td>
-                    <td class="text-center">{{$leave['dateApplied']}}</td>
+                    <td class="text-center text-{{$leave['status'] == 'APPROVED' ? 'success' : ($leave['status'] == 'REJECTED' ? 'danger' : 'warning' )}}">{{$leave['status']}}</td>
+                    <td class="text-center">{{$leave['createdAt']}}</td>
                 </tr>
             @empty
                 <tr>
@@ -110,27 +108,6 @@
             @endforelse
             </tbody>
         </table>
-    </div>
-    <div class="row">
-        <nav class="col" aria-label="Page navigation">
-            <ul class="pagination justify-content-end">
-                <li class="page-item @if($pageData['currentPage'] == 1) disabled @endif">
-                    <a class="page-link" href="#" @if($pageData['currentPage'] == 1) tabindex="-1" @endif>Previous</a>
-                </li>
-                @for ($i = 1; $i <= $pageData['maxPage']; $i++)
-                    @if ($i == $pageData['currentPage'])
-                        <li class="page-item active">
-                            <a class="page-link" href="#">{{$i}}<span class="sr-only">(current)</span></a>
-                        </li>
-                    @else
-                        <li class="page-item"><a class="page-link" href="#">{{$i}}</a></li>
-                    @endif
-                @endfor
-                <li class="page-item @if($pageData['currentPage'] == $pageData['maxPage']) disabled @endif">
-                    <a class="page-link" href="#" @if($pageData['currentPage'] == $pageData['maxPage']) tabindex="-1" @endif>Next</a>
-                </li>
-            </ul>
-        </nav>
     </div>
 </div>
 @endsection

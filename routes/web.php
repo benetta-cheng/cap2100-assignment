@@ -23,41 +23,8 @@ Route::get('/logout', 'App\Http\Controllers\AuthenticationController@logout')->m
 Route::get('/layout', function () {
     return view('layout.layout');
 });
-Route::get('/history', function () {
-    $historyTestData = [
-        "userRole" => "Student",
-        "leaves" => [
-            ["leaveId" => "SL12345", "courseId" => "IBM2104", "student" => "Daniel Lee", "approvalStatus" => "APPROVED", "dateApplied" => "03/09/2020"],
-            ["leaveId" => "SL12347", "courseId" => "IBM2104", "student" => "Katy Johnson*", "approvalStatus" => "REJECTED", "dateApplied" => "03/09/2020"],
-            ["leaveId" => "SL12346", "courseId" => "IBM2104", "student" => "Vinita Mageswaran", "approvalStatus" => "APPROVED", "dateApplied" => "03/09/2020"],
-            ["leaveId" => "SL12365", "courseId" => "IBM2104", "student" => "Anjay Keesha", "approvalStatus" => "PENDING", "dateApplied" => "03/09/2020"],
-            ["leaveId" => "SL12405", "courseId" => "IBM2104", "student" => "Ilya Vladimir*", "approvalStatus" => "APPROVED", "dateApplied" => "03/09/2020"],
-            ["leaveId" => "SL12415", "courseId" => "IBM2104", "student" => "Xiao Ming", "approvalStatus" => "APPROVED", "dateApplied" => "03/09/2020"]
-        ],
-        "pageData" => [
-            "currentPage" => 1,
-            "maxPage" => 5
-        ]
-    ];
-    return view('history', $historyTestData);
-});
-Route::get('/pending', function () {
-    $pendingTestData = [
-        "leaves" => [
-            ["leaveId" => "SL12345", "courseId" => "IBM2104", "student" => "Daniel Lee"],
-            ["leaveId" => "SL12347", "courseId" => "IBM2104", "student" => "Katy Johnson*"],
-            ["leaveId" => "SL12346", "courseId" => "IBM2104", "student" => "Vinita Mageswaran"],
-            ["leaveId" => "SL12365", "courseId" => "IBM2104", "student" => "Anjay Keesha"],
-            ["leaveId" => "SL12405", "courseId" => "IBM2104", "student" => "Ilya Vladimir*"],
-            ["leaveId" => "SL12415", "courseId" => "IBM2104", "student" => "Xiao Ming"]
-        ],
-        "pageData" => [
-            "currentPage" => 1,
-            "maxPage" => 5
-        ]
-    ];
-    return view('pending', $pendingTestData);
-});
+Route::get('/history', 'App\Http\Controllers\HistoryController@show');
+Route::get('/pending', 'App\Http\Controllers\PendingController@show');
 Route::get('/dashboard', function () {
     $dashboardTestData = [
         "newUpdates" => [
