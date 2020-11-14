@@ -2,6 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Course;
+use App\Models\Enrolment;
+use App\Models\Programme;
+use App\Models\Section;
 use App\Models\Session;
 use App\Models\Staff;
 use App\Models\Student;
@@ -30,6 +34,14 @@ class DatabaseSeeder extends Seeder
         DB::table('leave_action')->truncate();
         DB::table('supporting_document')->truncate();
         DB::table('enrolment')->truncate();
+
+        Course::factory()->times(10)->create();
+
+        Enrolment::factory()->times(10)->create();
+
+        Programme::factory()->times(10)->create();
+
+        Section::factory()->times(10)->create();
 
         Student::factory()->times(5)->create();
         Student::factory()->times(5)->international()->create();
