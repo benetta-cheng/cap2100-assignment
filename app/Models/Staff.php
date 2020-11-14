@@ -25,4 +25,9 @@ class Staff extends Authenticatable
     {
         return $this->hasMany('App\Models\Programme', 'head_of_programme', 'staff_id');
     }
+
+    public function updates()
+    {
+        return $this->hasMany('App\Models\Update', 'staff_id', 'staff_id');
+    }
 }

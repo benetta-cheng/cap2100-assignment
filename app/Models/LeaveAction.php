@@ -31,6 +31,7 @@ class LeaveAction extends Model
     public function setStatus($status, $remark = null)
     {
         $this->staff_status = $status;
+
         if ($remark === null) {
             $this->remarks = "";
         }

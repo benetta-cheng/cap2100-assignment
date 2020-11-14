@@ -23,25 +23,47 @@ Route::get('/logout', 'App\Http\Controllers\AuthenticationController@logout')->m
 Route::get('/layout', function () {
     return view('layout.layout');
 });
+
 Route::get('/history', 'App\Http\Controllers\HistoryController@show');
 Route::get('/pending', 'App\Http\Controllers\PendingController@show');
-Route::get('/dashboard', function () {
-    $dashboardTestData = [
-        "newUpdates" => [
-            ["update" => "Mr Tang Yang Tze has approved your leave", "leaveId" => "SL12345"],
-            ["update" => "Ms Ng Ruoh Ling has approved your leave", "leaveId" => "SL12345"],
-            ["update" => "Ms Fui Chie Shee has approved your leave", "leaveId" => "SL12345"],
-            ["update" => "Ms Lusiana Syaiful has approved your leave", "leaveId" => " SL12344"],
+
+Route::get('/history', function () {
+    $historyTestData = [
+        "userRole" => "Student",
+        "leaves" => [
+            ["leaveId" => "SL12345", "courseId" => "IBM2104", "student" => "Daniel Lee", "approvalStatus" => "APPROVED", "dateApplied" => "03/09/2020"],
+            ["leaveId" => "SL12347", "courseId" => "IBM2104", "student" => "Katy Johnson*", "approvalStatus" => "REJECTED", "dateApplied" => "03/09/2020"],
+            ["leaveId" => "SL12346", "courseId" => "IBM2104", "student" => "Vinita Mageswaran", "approvalStatus" => "APPROVED", "dateApplied" => "03/09/2020"],
+            ["leaveId" => "SL12365", "courseId" => "IBM2104", "student" => "Anjay Keesha", "approvalStatus" => "PENDING", "dateApplied" => "03/09/2020"],
+            ["leaveId" => "SL12405", "courseId" => "IBM2104", "student" => "Ilya Vladimir*", "approvalStatus" => "APPROVED", "dateApplied" => "03/09/2020"],
+            ["leaveId" => "SL12415", "courseId" => "IBM2104", "student" => "Xiao Ming", "approvalStatus" => "APPROVED", "dateApplied" => "03/09/2020"]
         ],
-        "approvalStatuses" => [
-            ["course" => "IBM2104", "leaveId" => "SL12345", "status" => "APPROVED"],
-            ["course" => "IBM2105", "leaveId" => "SL12345", "status" => "REJECTED"],
-            ["course" => "CAP2100", "leaveId" => "SL12345", "status" => "PENDING"],
-            ["course" => "IBM2104", "leaveId" => "SL12345", "status" => "REJECTED"]
+        "pageData" => [
+            "currentPage" => 1,
+            "maxPage" => 5
         ]
     ];
-    return view('dashboard', $dashboardTestData);
+    return view('history', $historyTestData);
 });
+Route::get('/pending', function () {
+    $pendingTestData = [
+        "leaves" => [
+            ["leaveId" => "SL12345", "courseId" => "IBM2104", "student" => "Daniel Lee"],
+            ["leaveId" => "SL12347", "courseId" => "IBM2104", "student" => "Katy Johnson*"],
+            ["leaveId" => "SL12346", "courseId" => "IBM2104", "student" => "Vinita Mageswaran"],
+            ["leaveId" => "SL12365", "courseId" => "IBM2104", "student" => "Anjay Keesha"],
+            ["leaveId" => "SL12405", "courseId" => "IBM2104", "student" => "Ilya Vladimir*"],
+            ["leaveId" => "SL12415", "courseId" => "IBM2104", "student" => "Xiao Ming"]
+        ],
+        "pageData" => [
+            "currentPage" => 1,
+            "maxPage" => 5
+        ]
+    ];
+    return view('pending', $pendingTestData);
+});
+
+Route::get('/dashboard', 'App\Http\Controllers\DashboardController@show');
 
 Route::post('/leave/{leave}/approve', 'App\Http\Controllers\LeaveController@approve')->middleware('auth:staff');
 
@@ -56,13 +78,13 @@ Route::get('/leave/{leave}/supportingDocuments/{supportingDocument}', 'App\Http\
 Route::get('/leave/{leave}', 'App\Http\Controllers\LeaveController@show')->middleware('auth:staff,students');
 
 //Get Application Form view
-Route::get('/ApplicationForm', 'App\Http\Controllers\LeaveApplicationFormController@index'); 
+Route::get('/ApplicationForm', 'App\Http\Controllers\LeaveApplicationFormController@index');
 
 //Store application info into database and redirect to History page
-Route::get('/ApplicationConfirmation/confirm','App\Http\Controllers\LeaveApplicationConfirmationController@storeDB')->name('ApplicationConfirmation/confirm');
+Route::get('/ApplicationConfirmation/confirm', 'App\Http\Controllers\LeaveApplicationConfirmationController@storeDB')->name('ApplicationConfirmation/confirm');
 
 //Enable download and clickable link for file when displaying on confirmation page
 Route::get('/ApplicationConfirmation/download/{filename}', 'App\Http\Controllers\LeaveApplicationConfirmationController@downloadDoc');
 
 //Get Application Confirmation view, inputs from Application from form is passed here, input storing in session and validation for affected classes is done here
-Route::post('/ApplicationConfirmation','App\Http\Controllers\LeaveApplicationConfirmationController@passInput')->name('ApplicationConfirmation');
+Route::post('/ApplicationConfirmation', 'App\Http\Controllers\LeaveApplicationConfirmationController@passInput')->name('ApplicationConfirmation');

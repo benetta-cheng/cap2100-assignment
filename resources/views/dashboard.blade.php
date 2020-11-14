@@ -9,10 +9,20 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
+                
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             themeSystem: 'bootstrap',
             events: [
+                @foreach ($calendarData as $event)
+                {
+                    title : '{{$event["leaveId"]}}',
+                    start : '{{$event["startDate"]}}',
+                    end : '{{$event["endDate"]}}',
+                    backgroundColor : '{{$event["status"] === "Pending" ? '#FFC107' : ($event["status"] === "Approve" ? '#28A745' : '#DC3545')}}',
+                    borderColor: '{{$event["status"] === "Pending" ? '#FFC107' : ($event["status"] === "Approve" ? '#28A745' : '#DC3545')}}'
+                },
+                @endforeach
                 {
                     title  : 'SL12345',
                     start  : '2020-10-15',
@@ -40,7 +50,13 @@
                     backgroundColor: '#28A745',
                     borderColor: '#28A745'
                 }
-            ]
+            ],
+            //This is a workaround for the FullCalendar bug that displays 12a if the event wraps multiple rows
+            eventContent: function(args) {
+                if (!args.isStart) {
+                    return args.event.title
+                }
+            }
         });
         calendar.render();
         });
@@ -93,16 +109,16 @@
             <table class="table border-right border-left border-bottom table-hover">
                 <thead class="bg-danger text-light">
                     <tr>
-                        <th>COURSE</th>
-                        <th class="text-center">LEAVE ID</th>
+                        <th>LEAVE ID</th>
+                        <th class="text-center">COURSES</th>
                         <th class="text-center">APPROVAL STATUS</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($approvalStatuses as $approvalStatus)
                     <tr>
-                        <td>{{$approvalStatus['course']}}</td>
-                        <td class="text-center">{{$approvalStatus['leaveId']}}</td>
+                        <td>{{$approvalStatus['leaveId']}}</td>
+                        <td class="text-center">{{$approvalStatus['courses']}}</td>
                         <td class="text-{{$approvalStatus['status'] == 'APPROVED' ? 'success' : ($approvalStatus['status'] == 'REJECTED' ? 'danger' : 'warning') }} text-center
                         ">{{$approvalStatus['status']}}</td>
                     </tr>

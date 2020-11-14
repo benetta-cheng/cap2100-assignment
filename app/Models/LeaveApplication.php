@@ -41,4 +41,9 @@ class LeaveApplication extends Model
         $this->status = $status;
         $this->save();
     }
+
+    public function updates()
+    {
+        return $this->hasMany('App\Models\Update', 'leave_id', 'leave_id');
+    }
 }

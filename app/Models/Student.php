@@ -30,4 +30,9 @@ class Student extends Authenticatable
     {
         return $this->belongsTo('App\Models\Programme', 'programme', 'programme_id');
     }
+
+    public function updates()
+    {
+        return $this->hasMany('App\Models\Update', 'student_id', 'student_id');
+    }
 }
