@@ -18,14 +18,15 @@
     <div class="row my-4">
         <h3 class="col">LEAVE APPLICATION</h3>
     </div>
-    <form>
+<form action="{{route('ApplicationConfirmation')}}" method="POST" enctype="multipart/form-data">
+        @csrf
         <div class="form-group row">
             <div class="col-md-6">
                 {{--Leave Type Selection--}}
                 <div class="row">
                     <div class="col">
                         <label for="leaveType" class="mr-sm-2">Leave type:</label>
-                        <select class="form-control mb-2 mr-sm-2" id="select" required>
+                        <select class="form-control mb-2 mr-sm-2" id="select" name="leaveType" required>
                             <option>Medical Leave</option>
                             <option>Official Leave</option>
                             <option>Bereavement Leave</option>
@@ -36,13 +37,13 @@
                     {{--Leave Duration Selection--}}
                     <label for="dateOfAbsence" class="mr-sm-2 col-12">Date of Absence:</label>
                     <div class="input-group date col" id="datetimepicker1" data-target-input="nearest">
-                        <input id="dateOfAbsence" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" placeholder="From" required/>
+                        <input name="startDate" id="dateOfAbsence" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" placeholder="From" required/>
                         <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
                     </div>
                     <div class="input-group date col" id="datetimepicker2" data-target-input="nearest">
-                        <input id="dateOfAbsence" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" placeholder="To" required/>
+                        <input name="endDate" id="dateOfAbsence" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" placeholder="To" required/>
                         <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
@@ -52,7 +53,7 @@
             {{--Leave Reason--}}
             <div class="col-md-6">
                 <label for="comment">Reason:</label>
-                <textarea class="form-control" rows="5" id="comment" required></textarea>
+                <textarea name="reason" class="form-control" rows="5" id="comment" required></textarea>
                 <div class ="valid-feedback">Valid</div>
                 <div class="invalid-feedback">Please fill out this field</div>
             </div>

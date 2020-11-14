@@ -88,35 +88,14 @@ Route::get('/leave/{leave}/supportingDocuments/{supportingDocument}', 'App\Http\
 
 Route::get('/leave/{leave}', 'App\Http\Controllers\LeaveController@show')->middleware('auth:staff,students');
 
-Route::get('/ApplicationForm', function () {
-    return view('ApplicationForm');
-});
+//Get Application Form view
+Route::get('/ApplicationForm', 'App\Http\Controllers\LeaveApplicationFormController@index'); 
 
-Route::get('/ApplicationConfirmation', function () {
+//Store application info into database and redirect to History page
+Route::get('/ApplicationConfirmation/confirm','App\Http\Controllers\LeaveApplicationConfirmationController@storeDB')->name('ApplicationConfirmation/confirm');
 
-    // This is just test data in the form of an array, the actual code will most likely return an object (Changes from array to object need to be made in leave.blade.php in that case)
-    $leaveTestData = [
-        "userRole" => "Lecturer", // Will probably be changed when proper authentication is setup
-        "details" => [
-            "leaveId" => "SL123456",
-            "leaveType" => "Sick Leave",
-            "leavePeriod" => "01/01/2020 08:00 - 05/01/2020 16:00",
-            "leaveStatus" => "PENDING",
-            "reason" => "Broken Arm because I fell off a hill while going mountain climbling with my friends during semester break",
-            "supportingDocuments" => [
-                ["name" => "MC(Broken arm).png", "link" => "#"],
-                ["name" => "MC(Hospitalization).png", "link" => "#"]
-            ],
-            "affectedClasses" => [
-                "IBM2104 INTRODUCTION TO WEB PROGRAMMING WITH PHP",
-                "ICT2102 INTRODUCTION TO DATA STRUCTURE",
-                "IBM2105 INTRODUCTION TO MOBILE APPS DEVELOPMENT"
-            ]
-        ]
-    ];
-    return view('ApplicationConfirmation', $leaveTestData);
-});
+//Enable download and clickable link for file when displaying on confirmation page
+Route::get('/ApplicationConfirmation/download/{filename}', 'App\Http\Controllers\LeaveApplicationConfirmationController@downloadDoc');
 
-Route::get('/StudentHistory', function () {
-    return view('StudentHistory');
-});
+//Get Application Confirmation view, inputs from Application from form is passed here, input storing in session and validation for affected classes is done here
+Route::post('/ApplicationConfirmation','App\Http\Controllers\LeaveApplicationConfirmationController@passInput')->name('ApplicationConfirmation');

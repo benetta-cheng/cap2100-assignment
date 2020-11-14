@@ -5,8 +5,14 @@
 @section('content')
 <div class="container">
 	<div class="row my-4">
+		@if (empty($details['affectedClasses']))
+		<div class="alert alert-danger">
+			<strong>Fail! </strong>No affected Classes! Fail to generate leave application. <a href="#" onclick="history.back()" class="alert-link">Click here to go back</a>.
+		</div>
+		@endif
         <h3 class="col-8">LEAVE CONFIRMATION</h3>
-    </div>
+	</div>
+	<form action="{{route('ApplicationConfirmation/confirm')}}">
 	<div class="row my-4">
 		<div class="col-md-12 pr-0">
 			<div class="card">
@@ -38,28 +44,32 @@
 						<div>
 							<span class="col p-0">Supporting Documents</span>
 						</div>
+						@if(!empty($details['supportingDocuments']))
 						<div>
 							<ul class="mt-1 list-unstyled">
 								<p class="mt-1"> 
-								@foreach ($details['supportingDocuments'] as $documentDetails)
-									<li><a href="{{$documentDetails['link']}}">{{$documentDetails['name']}}</a></li>
+								@foreach ($details['supportingDocuments'] as $documentName)
+									<li><a href="ApplicationConfirmation/download/{{$documentName}}">{{$documentName}}</a></li>
 								@endforeach
 								</p>
 							</ul>
 						</div>
+						@endif
 					</div>
 					{{--Affected Class--}}
 					<div class="list-group-item">
 						<div>
 							<span class="col p-0">Affected Classes</span>
 						</div>
+						@if(!empty($details['affectedClasses']))
 						<div>
 							<ul class="mt-1 list-unstyled">
-								@foreach ($details['affectedClasses'] as $className)
-									<li>{{$className}}</li>
+								@foreach ($details['affectedClasses'] as $class)
+									<li>{{$class->course_id . " " . $class->course_name}}</li>
 								@endforeach
 							</ul>
 						</div>
+						@endif
 					</div>
 				</div>
 			</div>		   
@@ -67,11 +77,15 @@
 	</div>
 	<div class="row justify-content-between">
 		<div class="col-md-1">
-			<button type="button" class="btn btn-light" href="#">Back</button>
+		<button type="button" class="btn btn-light" onclick="history.back()">Back</button>
 		</div>
-		<div class="col-md-1">
-			<button type="submit" class="btn btn-success" href="#">Confirm</button>
-		</div>
+		@if (!empty($details['affectedClasses']))
+			<div class="col-md-1">
+				<button type="submit" class="btn btn-success ">Confirm</button>
+			</div>
+		@endif
 	</div>
 </div>
+</form>
+
 @endsection
