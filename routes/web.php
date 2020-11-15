@@ -32,7 +32,7 @@ Route::post('/leave/{leave}/reject', 'App\Http\Controllers\LeaveController@rejec
 
 Route::post('/leave/{leave}/meetStudent', 'App\Http\Controllers\LeaveController@meetStudent')->middleware('auth:staff');
 
-Route::get('/leave/{leave}/cancel', 'App\Http\Controllers\LeaveController@cancel')->middleware('auth');
+Route::post('/leave/{leave}/cancel', 'App\Http\Controllers\LeaveController@cancel')->middleware('auth');
 
 Route::get('/leave/{leave}/supportingDocuments/{supportingDocument}', 'App\Http\Controllers\LeaveController@getSupportingDocument')->middleware('auth:staff,students');
 
