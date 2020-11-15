@@ -28,10 +28,8 @@ class LeaveApplicationConfirmationController extends Controller
         if ($request->file('supportingDocuments') != null) {
             foreach ($request->file('supportingDocuments') as $document) {
                 $documentName = $document->getClientOriginalName();
-                $storeDoc = $document->storeAs('tmp/' . $student->student_id, $documentName);
-                $path = storage_path('app/' . $storeDoc);
+                $document->storeAs('tmp/' . $student->student_id, $documentName);
                 $docArray[] = $documentName;
-                $documentPaths[$document->getClientOriginalName()] = $path;
             }
         }
 
@@ -103,7 +101,6 @@ class LeaveApplicationConfirmationController extends Controller
         $request->session()->put('startDate',  request()->get('startDate'));
         $request->session()->put('endDate',  request()->get('endDate'));
         $request->session()->put('reason', $details['reason']);
-        $request->session()->put('supportingDocuments', $documentPaths); //currently storing document id only
         $request->session()->put('docNames', $docArray);
         $request->session()->put('affectedClasses', $details['affectedClasses']);
         $request->session()->put('affectedSessions', $affectedSessions);
@@ -146,6 +143,9 @@ class LeaveApplicationConfirmationController extends Controller
                 $supportingDocumentRecord->leave_id = $leaveID;
                 $supportingDocumentRecord->filename = $doc;
                 $supportingDocumentRecord->save();
+
+                //Move from storage/app/tmp/{student_id} to storage/app/supportingDocuments/{student_id}
+                Storage::disk('local')->move('tmp/' . $student->student_id . '/' . $doc, 'supportingDocuments/' . $leaveID . "/" . $doc);
             }
         }
 
@@ -176,12 +176,6 @@ class LeaveApplicationConfirmationController extends Controller
             $hopLeaveAction->save();
         }
 
-        //Delete files in storage/app/tmp/{student_id} after confirm submission
-        $documentsDelete = Storage::disk('local')->files('tmp' . $student->student_id);
-        foreach ($documentsDelete as $documentDelete) {
-            Storage::disk('local')->delete($documentDelete);
-        }
-
         //Clear session after confirm submission
         if ($request->session()->has(['leaveType', 'startDate', 'endDate', 'reason', 'supportingDocuments', 'affectedClasses', 'affectedSessions'])) {
             $request->session()->forget('leaveType', 'startDate', 'endDate', 'reason', 'supportingDocuments', 'affectedClasses', 'affectedSessions');
@@ -192,9 +186,9 @@ class LeaveApplicationConfirmationController extends Controller
 
     public function downloadDoc(Request $request, $filename)
     {
-        $supportingDocuments = $request->session()->get('supportingDocuments');
-        if (isset($supportingDocuments[$filename])) {
-            return response()->download($supportingDocuments[$filename]);
+        $supportingDocuments = $request->session()->get('docNames');
+        if (in_array($filename, $supportingDocuments)) {
+            return response()->file(storage_path('app/tmp/' . auth()->user()->student_id . '/' . $filename));
         }
         abort(404);
     }
