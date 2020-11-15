@@ -17,7 +17,8 @@ class CreateUpdateTable extends Migration
             $table->id();
             $table->string('leave_id');
             $table->string('student_id');
-            $table->string('staff_id');
+            $table->string('staff_id')->nullable();
+            $table->string('action_message');
             $table->timestamps();
 
             $table->foreign('leave_id')->references('leave_id')->on('leave_application');

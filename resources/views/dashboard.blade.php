@@ -2,6 +2,8 @@
 
 @section('title', 'Dashboard')
 
+{{-- @inject('LeaveStatus', 'App\Enum\LeaveStatus') --}}
+
 @section('head')
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.2/main.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.2/main.min.js"></script>
@@ -19,7 +21,7 @@
                     title : '{{$event["leaveId"]}}',
                     start : '{{$event["startDate"]}}',
                     end : '{{$event["endDate"]}}',
-                    backgroundColor : '{{$event["status"] === "Pending" ? '#FFC107' : ($event["status"] === "Approve" ? '#28A745' : '#DC3545')}}',
+                    backgroundColor : '{{$event["status"] === LeaveStatus::PENDING ? '#FFC107' : ($event["status"] === "Approve" ? '#28A745' : '#DC3545')}}',
                     borderColor: '{{$event["status"] === "Pending" ? '#FFC107' : ($event["status"] === "Approve" ? '#28A745' : '#DC3545')}}'
                 },
                 @endforeach
@@ -94,10 +96,10 @@
                         <th>Updates</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="scrollbar scrollbar-danger" style="height: 250px; overflow-y: auto; position: absolute">
                     @foreach($newUpdates as $newUpdate)
-                    <tr>
-                        <td>{{$newUpdate['update']}}<br>(ID: {{$newUpdate['leaveId']}})</td>
+                    <tr style="cursor:pointer" onclick="window.location='leave/{{$newUpdate['leaveId']}}';">
+                        <td>{{$newUpdate['message']}}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -119,7 +121,7 @@
                     <tr>
                         <td>{{$approvalStatus['leaveId']}}</td>
                         <td class="text-center">{{$approvalStatus['courses']}}</td>
-                        <td class="text-{{$approvalStatus['status'] == 'APPROVED' ? 'success' : ($approvalStatus['status'] == 'REJECTED' ? 'danger' : 'warning') }} text-center
+                        <td class="text-{{$approvalStatus['status'] == LeaveStatus::APPROVED ? 'success' : ($approvalStatus['status'] == LeaveStatus::REJECTED ? 'danger' : 'warning') }} text-center
                         ">{{$approvalStatus['status']}}</td>
                     </tr>
                     @empty

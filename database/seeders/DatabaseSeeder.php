@@ -9,12 +9,13 @@ use App\Models\Section;
 use App\Models\Session;
 use App\Models\Staff;
 use App\Models\Student;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
+
     /**
      * Seed the application's database.
      *
@@ -35,23 +36,29 @@ class DatabaseSeeder extends Seeder
         DB::table('supporting_document')->truncate();
         DB::table('enrolment')->truncate();
 
-        Course::factory()->times(10)->create();
-
-        Enrolment::factory()->times(10)->create();
-
-        Programme::factory()->times(10)->create();
-
-        Section::factory()->times(10)->create();
-
-        Student::factory()->times(5)->create();
-        Student::factory()->times(5)->international()->create();
+        Schema::enableForeignKeyConstraints();
 
         Staff::factory()->times(7)->create();
         Staff::factory()->times(2)->hop()->create();
         Staff::factory()->times(1)->io()->create();
 
-        Session::factory()->times(10)->create();
+        Programme::factory()->times(4)->create();
 
-        Schema::enableForeignKeyConstraints();
+        Course::factory()->times(20)->has(Section::factory()->count(mt_rand(1, 3))->has(Session::factory()->count(mt_rand(1, 2)), 'session'), 'section')->create();
+
+        $localStudents = Student::factory()->times(6)->create();
+        $internationalStudents = Student::factory()->times(6)->international()->create();
+
+        foreach ($localStudents as $student) {
+            for ($i = 0; $i < 6; $i++) {
+                Enrolment::factory()->supplyStudentId($student->student_id)->create();
+            }
+        }
+
+        foreach ($internationalStudents as $student) {
+            for ($i = 0; $i < 6; $i++) {
+                Enrolment::factory()->supplyStudentId($student->student_id)->create();
+            }
+        }
     }
 }

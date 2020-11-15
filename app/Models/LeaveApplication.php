@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enum\LeaveStatus;
 
 class LeaveApplication extends Model
 {
@@ -13,7 +14,7 @@ class LeaveApplication extends Model
     public $incrementing = false;
 
     protected $attributes = [
-        'status' => 'Pending'
+        'status' => LeaveStatus::PENDING
     ];
 
     public function student()
@@ -33,13 +34,19 @@ class LeaveApplication extends Model
 
     public function completed()
     {
-        return $this->status === 'cancelled' || $this->status === 'approved' || $this->status === 'rejected';
+        return $this->status === LeaveStatus::CANCELLED || $this->status === LeaveStatus::APPROVED || $this->status === LeaveStatus::REJECTED;
     }
 
     public function setStatus($status)
     {
         $this->status = $status;
         $this->save();
+
+        $update = new Update();
+        $update->student_id = $this->student_id;
+        $update->leave_id = $this->leave_id;
+        $update->action_message = 'Your leave has been ' . strtolower($status) . '. (Leave ID: [leaveID]).';
+        $update->save();
     }
 
     public function updates()

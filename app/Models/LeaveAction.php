@@ -4,13 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enum\LeaveStatus;
+use App\Enum\UserType;
 
 class LeaveAction extends Model
 {
     protected $table = 'leave_action';
 
     protected $attributes = [
-        'staff_status' => 'Pending'
+        'staff_status' => LeaveStatus::PENDING
     ];
 
     public function leaveApplication()
@@ -25,7 +27,7 @@ class LeaveAction extends Model
 
     public function completed()
     {
-        return $this->staff_status === 'approved' || $this->staff_status === 'rejected';
+        return $this->staff_status === LeaveStatus::APPROVED || $this->staff_status === LeaveStatus::REJECTED;
     }
 
     public function setStatus($status, $remark = null)
@@ -36,5 +38,17 @@ class LeaveAction extends Model
             $this->remarks = "";
         }
         $this->save();
+
+        $update = new Update();
+        $update->student_id = $this->leaveApplication->student_id;
+        $update->staff_id = auth()->user()->staff_id;
+        $update->leave_id = $this->leave_id;
+
+        if ($status === LeaveStatus::MEET_STUDENT) {
+            $update->action_message = '[staff] has requested to meet you. (Leave ID: [leaveID])';
+        } else {
+            $update->action_message = '[staff] has recommended the ' . strtolower($status) . " of your leave. (Leave ID: [leaveID]).";
+        }
+        $update->save();
     }
 }

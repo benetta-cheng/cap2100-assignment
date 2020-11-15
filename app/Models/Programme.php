@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Programme extends Model
 {
+    use HasFactory;
+
     protected $table = 'programme';
     protected $primaryKey = 'programme_id';
     protected $keyType = 'string';
@@ -19,6 +21,6 @@ class Programme extends Model
 
     public function student()
     {
-        return $this->hasMany('\App\Models\Student', 'programme_id', 'programme_id');
+        return $this->hasMany('\App\Models\Student', 'programme', 'programme_id');
     }
 }

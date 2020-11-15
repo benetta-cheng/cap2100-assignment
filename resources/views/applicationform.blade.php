@@ -27,9 +27,9 @@
                     <div class="col">
                         <label for="leaveType" class="mr-sm-2">Leave type:</label>
                         <select class="form-control mb-2 mr-sm-2" id="select" name="leaveType" required>
-                            <option>Medical Leave</option>
-                            <option>Official Leave</option>
-                            <option>Bereavement Leave</option>
+                            <option>{{LeaveType::MEDICAL_LEAVE}}</option>
+                            <option>{{LeaveType::OFFICIAL_LEAVE}}</option>
+                            <option>{{LeaveType::BEREAVEMENT_LEAVE}}</option>
                         </select>
                     </div>
                 </div>

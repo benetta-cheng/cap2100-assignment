@@ -3,8 +3,9 @@
 namespace Database\Factories;
 
 use App\Models\Programme;
+use App\Models\Staff;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
+use App\Enum\UserType;
 
 class ProgrammeFactory extends Factory
 {
@@ -22,12 +23,19 @@ class ProgrammeFactory extends Factory
      */
     public function definition()
     {
-        static $number = 0;
+        $programme_names = [
+            'Diploma in Information Technology',
+            'Diploma in Computer Science'
+        ];
+
+        $hops = Staff::where('staff_type', '=', UserType::HOP)->pluck('staff_id');
+
+        static $number = 1;
 
         return [
             'programme_id' => "P" . str_pad($number++, 8, "0", STR_PAD_LEFT),
-            'programme_name' => $this->faker->name,
-            'head_of_programme' => $this->faker->name
+            'programme_name' => $this->faker->randomElement($programme_names),
+            'head_of_programme' => $this->faker->randomElement($hops)
         ];
     }
 }

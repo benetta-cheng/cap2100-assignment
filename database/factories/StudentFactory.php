@@ -3,8 +3,10 @@
 namespace Database\Factories;
 
 use App\Models\Student;
+use App\Models\Programme;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
+use App\Enum\StudentType;
 
 class StudentFactory extends Factory
 {
@@ -22,16 +24,13 @@ class StudentFactory extends Factory
      */
     public function definition()
     {
-        // TO BE REPLACED WITH A ELOQUENT METHOD FOR PROGRAMMES
-        for ($i = 0; $i < 10; $i++) {
-            $programmes[] = 'P' . str_pad($i, 8, "0", STR_PAD_LEFT);
-        }
+        $programmes = Programme::all()->pluck('programme_id');
 
-        static $number = 0;
+        static $number = 1;
 
         return [
             'student_id' => "J" . str_pad($number++, 8, "0", STR_PAD_LEFT),
-            'student_type' => 'local',
+            'student_type' => StudentType::LOCAL,
             'ic_num' => $this->faker->myKadNumber,
             'name' => $this->faker->name,
             'contact_num' => $this->faker->mobileNumber,
@@ -53,7 +52,7 @@ class StudentFactory extends Factory
         return $this->state(function (array $attributes) use ($faker) {
             return [
                 'name' => $faker->firstName() . " " . $faker->lastName(),
-                'student_type' => 'international',
+                'student_type' => StudentType::INTERNATIONAL,
                 'ic_num' => $faker->unique()->randomNumber(9)
             ];
         });

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Student;
+use App\Enum\UserType;
+use App\Models\Update;
 
 class DashboardController extends Controller
 {
@@ -13,40 +15,22 @@ class DashboardController extends Controller
      * @param  int  $id
      * @return \Illuminate\View\View
      */
-
-    private static $studentUserId = 'J12345678';
-
     public function show()
     {
-        // Route::get('/dashboard', function () {
-        //     $dashboardTestData = [
-        //         "newUpdates" => [
-        //             ["update" => "Mr Tang Yang Tze has approved your leave", "leaveId" => "SL12345"],
-        //             ["update" => "Ms Ng Ruoh Ling has approved your leave", "leaveId" => "SL12345"],
-        //             ["update" => "Ms Fui Chie Shee has approved your leave", "leaveId" => "SL12345"],
-        //             ["update" => "Ms Lusiana Syaiful has approved your leave", "leaveId" => " SL12344"],
-        //         ],
-        //         "approvalStatuses" => [
-        //             ["course" => "IBM2104", "leaveId" => "SL12345", "status" => "APPROVED"],
-        //             ["course" => "IBM2105", "leaveId" => "SL12345", "status" => "REJECTED"],
-        //             ["course" => "CAP2100", "leaveId" => "SL12345", "status" => "PENDING"],
-        //             ["course" => "IBM2104", "leaveId" => "SL12345", "status" => "REJECTED"]
-        //         ]
-        //     ];
-        //     return view('dashboard', $dashboardTestData);
-        // });
+        //Authentication check
+        $user = auth()->user();
 
-        $studentUser = Student::find(DashboardController::$studentUserId);
+        // $studentUser = Student::find(DashboardController::$studentUserId);
 
-        $updates = $studentUser->updates;
-        $leaves = $studentUser->leaveApplication;
+        $updates = Update::where('student_id', '=', $user->student_id)->orderBy('created_at', 'desc')->get();
+        $leaves = $user->leaveApplication;
 
         $approvalStatuses = [];
         foreach ($leaves as $leave) {
 
             $courses = [];
 
-            foreach ($leave->leaveActions->where('staff_authority', 'lecturer') as $action) {
+            foreach ($leave->leaveActions->where('staff_authority', UserType::LECTURER) as $action) {
                 $course_id = $action->session->section->course->course_id;
                 if (!in_array($course_id, $courses)) {
                     $courses[] = $course_id;
@@ -62,9 +46,13 @@ class DashboardController extends Controller
 
         $newUpdates = [];
         foreach ($updates as $update) {
+            $message = $update->action_message;
+            if ($update->staff_id) {
+                $message = str_replace('[staff]', $update->staff->name, $message);
+            }
             $newUpdates[] = [
-                "update" => $update->staff->name,
-                "leaveId" => $update->leaveApplication->leave_id
+                'message' => str_replace('[leaveID]', $update->leave_id, $message),
+                'leaveId' => $update->leave_id
             ];
         }
 

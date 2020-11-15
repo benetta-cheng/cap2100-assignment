@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Enrolment extends Model
 {
+    use HasFactory;
+
     protected $table = 'enrolment';
 
     public function student()

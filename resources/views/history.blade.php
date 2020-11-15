@@ -43,7 +43,7 @@
                   </div>
             </div>
         </div>
-        @if ($userRole == 'Student')
+        @if ($userRole == UserType::STUDENT)
         <div class="row my-4 pb-4">
             <div class="col-10">
                 <div class="form-group mb-0">
@@ -82,8 +82,10 @@
             <thead>
                 <tr>
                     <th>Leave ID</th>
-                    @if ($userRole != 'Student')
+                    @if ($userRole != UserType::STUDENT)
+                    @if ($userRole != UserType::IO)
                     <th class="text-center">Course</th>
+                    @endif
                     <th class="text-center">Student</th>
                     @endif
                     <th class="text-center">Approval Status</th>
@@ -94,11 +96,13 @@
             @forelse ($leaves as $leave)
                 <tr style="cursor:pointer" onclick="window.location='leave/{{$leave['leaveId']}}';">
                     <td>{{$leave['leaveId']}}</td>
-                    @if ($userRole != 'Student')
+                    @if ($userRole != UserType::STUDENT)
+                    @if ($userRole != UserType::IO)
                     <td class="text-center">{{$leave['courseId']}}</td>
+                    @endif
                     <td class="text-center">{{$leave['student']}}</td>
                     @endif
-                    <td class="text-center text-{{$leave['status'] == 'APPROVED' ? 'success' : ($leave['status'] == 'REJECTED' ? 'danger' : 'warning' )}}">{{$leave['status']}}</td>
+                    <td class="text-center text-{{$leave['status'] == LeaveStatus::APPROVED ? 'success' : ($leave['status'] == LeaveStatus::REJECTED ? 'danger' : 'warning' )}}">{{$leave['status']}}</td>
                     <td class="text-center">{{$leave['createdAt']}}</td>
                 </tr>
             @empty

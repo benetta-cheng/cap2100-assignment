@@ -22,8 +22,8 @@
 @endsection
 
 @section('content')
-@if (!$leave->completed() && $userLeaveStatus != "APPROVED" && $userLeaveStatus != "REJECTED")
-@if ($userRole == "Student")
+@if (!$leave->completed() && $userLeaveStatus != LeaveStatus::APPROVED && $userLeaveStatus != LeaveStatus::REJECTED)
+@if ($userRole == UserType::STUDENT)
 {{-- Cancellation Modal --}}
 <div class="modal fade" id="cancellationModal" tabindex="-1" role="dialog" aria-labelledby="cancellationModalTitle"
     aria-hidden="true">
@@ -100,7 +100,7 @@
         </div>
     </div>
 </div>
-@if($userLeaveStatus == "PENDING")
+@if($userLeaveStatus == LeaveStatus::PENDING)
 {{-- Meet Student Modal --}}
 <div class="modal fade" id="meetStudentModal" tabindex="-1" role="dialog" aria-labelledby="meetStudentModalTitle"
     aria-hidden="true">
@@ -133,16 +133,16 @@
 @endif
 <div class="container">
     <div class="row my-4">
-        <h3 class="col-8">STATUS DETAILS ({{$leaveStatus}})</h3>
+        <h3 class="col-8">STATUS DETAILS ({{strtoupper($leaveStatus)}})</h3>
         <div class="col-md-4 d-flex justify-content-md-end">
-            @if (!$leave->completed() && $userLeaveStatus != "APPROVED" && $userLeaveStatus != "REJECTED" &&
-            $userLeaveStatus != "CANCELLED")
-            @if ($userRole == "Student")
+            @if (!$leave->completed() && $userLeaveStatus != LeaveStatus::APPROVED && $userLeaveStatus != LeaveStatus::REJECTED &&
+            $userLeaveStatus != LeaveStatus::CANCELLED)
+            @if ($userRole == UserType::STUDENT)
             <button class="btn btn-danger" data-toggle="modal" data-target="#cancellationModal">Cancel Leave</button>
             @else
             <div class="btn-group" role="group" aria-label="Review Leave Actions">
                 <button class="btn btn-success" data-toggle="modal" data-target="#approvalModal">Approve</button>
-                @if($userLeaveStatus == "PENDING")
+                @if($userLeaveStatus == LeaveStatus::PENDING)
                 <button class="btn btn-warning" data-toggle="modal" data-target="#meetStudentModal">Meet
                     Student</button>
                 @endif
@@ -150,10 +150,10 @@
             </div>
             @endif
 
-            @elseif ($userRole != "Student")
+            @elseif ($userRole != UserType::STUDENT)
             <p><em>
-                    @if ($userLeaveStatus === 'APPROVED' || $userLeaveStatus === 'REJECTED')
-                    You have recommended the {{$userLeaveStatus === 'APPROVED' ? "approval" : "rejection"}} of this
+                    @if ($userLeaveStatus === LeaveStatus::APPROVED || $userLeaveStatus === LeaveStatus::REJECTED)
+                    You have recommended the {{$userLeaveStatus === LeaveStatus::APPROVED ? "approval" : "rejection"}} of this
                     leave
                     @else
                     You did not recommend any action for this leave
@@ -280,7 +280,7 @@
                             </div>
                             <span class="col p-0">{{$approvalDetails['approver']}}</span>
                             <span
-                                class="col text-{{$approvalDetails['status'] == 'APPROVED' ? 'success' : ($approvalDetails['status'] == 'REJECTED' ? 'danger' : 'warning')}} text-right">{{$approvalDetails['status']}}</span>
+                                class="col text-{{$approvalDetails['status'] == LeaveStatus::APPROVED ? 'success' : ($approvalDetails['status'] == LeaveStatus::REJECTED ? 'danger' : 'warning')}} text-right">{{$approvalDetails['status']}}</span>
                         </div>
                         {{-- The paragraph is contained within a div with the collapse class instead of immediately applying the collapse class to the paragraph to prevent jumpy collapsing caused by the margin top --}}
                         <div class="collapse" id="collapseStatus{{$loop->index}}">
@@ -290,7 +290,7 @@
                     @else
                     <div class="list-group-item d-flex justify-content-between">
                         <span class="ml-4">{{$approvalDetails['approver']}}</span>
-                        <span class="text-{{$approvalDetails['status'] == 'APPROVED' ? 'success' : ($approvalDetails['status'] == 'REJECTED' ? 'danger' : 'warning')}}
+                        <span class="text-{{$approvalDetails['status'] == LeaveStatus::APPROVED ? 'success' : ($approvalDetails['status'] == LeaveStatus::REJECTED ? 'danger' : 'warning')}}
                         ">{{$approvalDetails['status']}}</span>
                     </div>
                     @endif

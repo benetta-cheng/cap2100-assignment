@@ -7,33 +7,65 @@ use App\Models\Staff;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Enum\UserType;
+use App\Enum\StudentType;
 
 class HistoryController extends Controller
 {
     public function show(Request $request)
     {
-        $userRole = 'Staff';
+        //Authentication check
+        $user = auth()->user();
+
+        if ($user instanceof Student) {
+            $userRole = UserType::STUDENT;
+        } else {
+            $userRole = $user->staff_type;
+        }
+
+        // $userRole = 'Staff';
 
         // SELECT * FROM student WHERE student_id = 'J12345678';
-        $studentUser = Student::find('J12345678');
-        $staffUser = Staff::find('S0001');
-
-        if ($userRole === 'Student') {
+        // $studentUser = Student::find('J12345678');
+        // $staffUser = Staff::find('S0001');
+        $leaves = [];
+        if ($user instanceof Student) {
             // SELECT * FROM leave_application WHERE student_id = 'J12345678';
-            $leaveApplications = $studentUser->leaveApplication;
+            $leaveApplications = $user->leaveApplication;
 
             foreach ($leaveApplications as $leave) {
                 $leaves[] = [
                     "leaveId" => $leave->leave_id,
-                    "approvalStatus" => $leave->status,
+                    "status" => $leave->status,
                     "dateApplied" => $leave->created_at,
-                    "leaveDateFrom" => $leave->start_date,
-                    "leaveDateTo" => $leave->end_date
+                    "createdAt" => $leave->created_at,
+                    "startDate" => $leave->start_date,
+                    "endDate" => $leave->end_date
                 ];
+            }
+        } else if ($user->staff_type === UserType::IO) {
+            $students = Student::where('student_type', '=', StudentType::INTERNATIONAL);
+
+            foreach ($students as $student) {
+                $leaveApplications = $student->leaveApplication;
+
+                foreach ($leaveApplications as $leave) {
+                    $leaveAction = $leave->leaveActions->where('staff_authority', UserType::IO)->first();
+                    if ($leaveAction->completed() || $leave->completed()) {
+                        $leaves[] = [
+                            "leaveId" => $leave->leave_id,
+                            "student" => $student->name,
+                            "status" => $leave->status,
+                            "createdAt" => $leave->created_at,
+                            "startDate" => $leave->start_date,
+                            "endDate" => $leave->end_date
+                        ];
+                    }
+                }
             }
         } else {
 
-            $sections = $staffUser->section;
+            $sections = $user->section;
 
             foreach ($sections as $section) {
                 $sessions = $section->session;
@@ -44,23 +76,55 @@ class HistoryController extends Controller
                     if ($leaveActions->count() > 0) {
                         foreach ($leaveActions as $action) {
                             $leave = $action->leaveApplication;
-                            $leaves[] = [
-                                "leaveId" => $leave->leave_id,
-                                "courseId" => $section->course_id,
-                                "student" => $leave->student->name,
-                                "status" => $leave->status,
-                                "createdAt" => $leave->created_at,
-                                "startDate" => $leave->start_date,
-                                "endDate" => $leave->end_date
-                            ];
+                            if ($action->completed() || $leave->completed()) {
+                                if (isset($leaves[$leave->leave_id])) {
+                                    $leaves[$leave->leave_id]['courseId'] .= ", " . $section->course_id;
+                                } else {
+                                    $leaves[$leave->leave_id] = [
+                                        "leaveId" => $leave->leave_id,
+                                        "courseId" => $section->course_id,
+                                        "student" => $leave->student->name,
+                                        "status" => $leave->status,
+                                        "createdAt" => $leave->created_at,
+                                        "startDate" => $leave->start_date,
+                                        "endDate" => $leave->end_date
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if ($user->staff_type === UserType::HOP) {
+                $students = $user->programme->student;
+                foreach ($students as $student) {
+                    $leaveApplications = $student->leaveApplication;
+
+                    foreach ($leaveApplications as $leave) {
+                        if ($leave->completed()) {
+                            if (isset($leaves[$leave->leave_id])) {
+                                $leaves[$leave->leave_id]['courseId'] .= ' (HOP)';
+                            } else {
+                                $leaves[] = [
+                                    "leaveId" => $leave->leave_id,
+                                    "courseId" => 'HOP',
+                                    "student" => $student->name,
+                                    "status" => $leave->status,
+                                    "createdAt" => $leave->created_at,
+                                    "startDate" => $leave->start_date,
+                                    "endDate" => $leave->end_date
+                                ];
+                            }
                         }
                     }
                 }
             }
         }
 
-        // Date From Filter
+
         foreach ($leaves as $key => $leave) {
+            // Date Filter
             // The startDate and endDate will undergo the date() function first to remove the time part
             if ($request->filled('leaveDateFrom') && $request->filled('leaveDateTo')) {
                 if (strtotime(date('d-m-Y', strtotime($leave['endDate']))) < strtotime($request->get('leaveDateFrom')) || strtotime(date('d-m-Y', strtotime($leave['startDate']))) > strtotime($request->get('leaveDateTo'))) {
@@ -75,35 +139,36 @@ class HistoryController extends Controller
                     unset($leaves[$key]);
                 }
             }
-        }
 
-        // Status Filter
-        foreach ($leaves as $key => $leave) {
+            // Status Filter
             if ($request->filled('approvalStatus')) {
                 if ($request->get('approvalStatus') !== $leave['status']) {
                     unset($leaves[$key]);
                 }
             }
-        }
 
-        // Name filter
-        foreach ($leaves as $key => $leave) {
+            // Name filter
             if ($request->filled('name')) {
                 if (strtoupper($request->get('name')) !== strtoupper($leave['student'])) {
                     unset($leaves[$key]);
                 }
             }
-        }
 
-        // Course Filter
-        foreach ($leaves as $key => $leave) {
+            // Course Filter
             if ($request->filled('course')) {
                 if (strtoupper($request->get('course')) !== strtoupper($leave['courseId'])) {
                     unset($leaves[$key]);
                 }
             }
+
+            // LeaveID Filter
+            if ($request->filled('leaveId')) {
+                if (strpos(strtoupper($leave['leaveId']), strtoupper($request->get('leaveId'))) === false) {
+                    unset($leaves[$key]);
+                }
+            }
         }
 
-        return view('history', ["userRole" => $userRole, "leaves" => $leaves, "section" => $section]);
+        return view('history', ["userRole" => $userRole, "leaves" => $leaves]);
     }
 }

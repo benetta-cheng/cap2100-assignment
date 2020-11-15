@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Enrolment;
+use App\Models\Section;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class EnrolmentFactory extends Factory
@@ -21,11 +22,20 @@ class EnrolmentFactory extends Factory
      */
     public function definition()
     {
-        static $number = 0;
 
-        return [
-            'student_id' => "J" . str_pad($number++, 8, "0", STR_PAD_LEFT),
-            'section_id' => "SC" . str_pad($number++, 8, "0", STR_PAD_LEFT)
-        ];
+        return [];
+    }
+
+    public function supplyStudentId($studentId)
+    {
+        $sections = Section::all()->filter(function ($section, $key) use ($studentId) {
+            return Enrolment::where([['student_id', '=', $studentId], ['section_id', '=', $section->section_id]])->count() === 0;
+        })->pluck('section_id');
+        return $this->state(function (array $attributes) use ($studentId, $sections) {
+            return [
+                'student_id' => $studentId,
+                'section_id' => $this->faker->randomElement($sections)
+            ];
+        });
     }
 }

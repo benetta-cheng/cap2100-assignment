@@ -55,7 +55,9 @@
                 @forelse ($leaves as $leave)
                     <tr style="cursor:pointer" onclick="window.location='leave/{{$leave['leaveId']}}';">
                         <td>{{$leave['leaveId']}}</td>
-                        <td class="text-center">{{$section['course_id']}}</td>
+                        @if($staffType != UserType::IO)
+                        <td class="text-center">{{$leave['courseId']}}</td>
+                        @endif
                         <td class="text-center">{{$leave['student']}}</td>
                     </tr>
                 @empty
