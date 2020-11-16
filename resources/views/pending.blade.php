@@ -3,8 +3,11 @@
 @section('title', 'Pending Page')
 
 @section('head')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css" integrity="sha512-PMjWzHVtwxdq7m7GIxBot5vdxUY+5aKP9wpKtvnNBZrVv1srI8tU6xvFMzG8crLNcMj/8Xl/WWmo/oAP/40p1g==" crossorigin="anonymous" />
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css" rel="stylesheet" />
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css"
+    integrity="sha512-PMjWzHVtwxdq7m7GIxBot5vdxUY+5aKP9wpKtvnNBZrVv1srI8tU6xvFMzG8crLNcMj/8Xl/WWmo/oAP/40p1g=="
+    crossorigin="anonymous" />
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css" rel="stylesheet" />
 @endsection
 
 @section('content')
@@ -13,18 +16,21 @@
         <h3 class="col">PENDING LEAVES</h3>
     </div>
     <form>
-        <div class ="row my-4">
+        <div class="row my-4">
             <div class="col form-group">
-                <label for="dateApplied" class="mr-sm-2">Date of Application :</label>
+                <label for="dateApplied" class="mr-sm-2">Absent Period:</label>
                 <div class="row">
                     <div class="col input-group date" id="datetimepicker1" data-target-input="nearest">
-                        <input name="leaveDateFrom" id="dateApplied" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" placeholder="From"/>
+                        <input name="leaveDateFrom" id="dateApplied" type="text"
+                            class="form-control datetimepicker-input" data-target="#datetimepicker1"
+                            placeholder="From" />
                         <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
                     </div>
                     <div class="col input-group date" id="datetimepicker2" data-target-input="nearest">
-                        <input name="leaveDateTo" id="dateApplied" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" placeholder="To"/>
+                        <input name="leaveDateTo" id="dateApplied" type="text" class="form-control datetimepicker-input"
+                            data-target="#datetimepicker2" placeholder="To" />
                         <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
@@ -33,7 +39,8 @@
             </div>
             <div class="col">
                 <label for="approvalStatus" class="mr-sm-2">Course:</label>
-                <input name='course'type="text" class="form-control" aria-label="Text input with segmented dropdown button" placeholder="Course ID">
+                <input name='course' type="text" class="form-control"
+                    aria-label="Text input with segmented dropdown button" placeholder="Course ID">
             </div>
         </div>
         <div class="row my-4">
@@ -53,17 +60,17 @@
             </thead>
             <tbody>
                 @forelse ($leaves as $leave)
-                    <tr style="cursor:pointer" onclick="window.location='leave/{{$leave['leaveId']}}';">
-                        <td>{{$leave['leaveId']}}</td>
-                        @if($staffType != UserType::IO)
-                        <td class="text-center">{{$leave['courseId']}}</td>
-                        @endif
-                        <td class="text-center">{{$leave['student']}}</td>
-                    </tr>
+                <tr style="cursor:pointer" onclick="window.location='leave/{{$leave['leaveId']}}';">
+                    <td>{{$leave['leaveId']}}</td>
+                    @if($staffType != UserType::IO)
+                    <td class="text-center">{{$leave['courseId']}}</td>
+                    @endif
+                    <td class="text-center">{{$leave['student']}}</td>
+                </tr>
                 @empty
-                    <tr>
-                        <td colspan="3">There is no pending applications</td>
-                    </tr>
+                <tr>
+                    <td colspan="3">There is no pending applications</td>
+                </tr>
                 @endforelse
             </tbody>
         </table>
@@ -79,10 +86,12 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js" integrity="sha512-2JBCbWoMJPH+Uj7Wq5OLub8E5edWHlTM4ar/YJkZh3plwB2INhhOC3eDoqHm1Za/ZOSksrLlURLoyXVdfQXqwg==" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js"
+    integrity="sha512-2JBCbWoMJPH+Uj7Wq5OLub8E5edWHlTM4ar/YJkZh3plwB2INhhOC3eDoqHm1Za/ZOSksrLlURLoyXVdfQXqwg=="
+    crossorigin="anonymous"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
             $('#datetimepicker1').datetimepicker({
                 format: 'L'
             });
@@ -90,5 +99,5 @@
                 format: 'L'
             });
         });
-    </script>
+</script>
 @endsection
