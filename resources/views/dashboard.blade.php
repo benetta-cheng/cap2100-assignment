@@ -24,33 +24,6 @@
                     borderColor: '{{$event["status"] === "Pending" ? '#FFC107' : ($event["status"] === "Approve" ? '#28A745' : '#DC3545')}}'
                 },
                 @endforeach
-                {
-                    title  : 'SL12345',
-                    start  : '2020-10-15',
-                    backgroundColor: '#DC3545',
-                    borderColor: '#DC3545'
-                },
-                {
-                    title  : 'SL12345',
-                    start  : '2020-10-05',
-                    end    : '2020-10-10',
-                    backgroundColor: '#FFC107',
-                    borderColor: '#FFC107',
-                    textColor: 'black'
-                },
-                {
-                    title  : 'SL12345',
-                    start  : '2020-10-08T12:30:00',
-                    backgroundColor: '#28A745',
-                    borderColor: '#28A745',
-                    allDay : false
-                },
-                {
-                    title  : 'SL12345',
-                    start  : '2020-10-20',
-                    backgroundColor: '#28A745',
-                    borderColor: '#28A745'
-                }
             ],
             //This is a workaround for the FullCalendar bug that displays 12a if the event wraps multiple rows
             eventContent: function(args) {
@@ -90,16 +63,16 @@
     </div>
     <div class="row my-4">
         @isset($newUpdates)
-        <div class="col-md-4">
+        <div class="col-md-4 table-responsive" style="max-height: 250px;">
             <table class="table table-bordered table-hover">
                 <thead class="bg-danger text-light">
                     <tr>
                         <th>Updates</th>
                     </tr>
                 </thead>
-                <tbody class="scrollbar scrollbar-danger" style="height: 250px; overflow-y: auto; position: absolute">
+                <tbody>
                     @foreach($newUpdates as $newUpdate)
-                    <tr style="cursor:pointer" onclick="window.location='leave/{{$newUpdate['leaveId']}}';">
+                    <tr style="cursor:pointer" onclick="window.location = '{{url('leave/' . $newUpdate['leaveId'])}}';">
                         <td>{{$newUpdate['message']}}</td>
                     </tr>
                     @endforeach
@@ -119,7 +92,8 @@
                 </thead>
                 <tbody>
                     @forelse($approvalStatuses as $approvalStatus)
-                    <tr>
+                    <tr style="cursor:pointer"
+                        onclick="window.location = '{{url('leave/' . $approvalStatus['leaveId'])}}';">
                         <td>{{$approvalStatus['leaveId']}}</td>
                         <td class="text-center">{{$approvalStatus['courses']}}</td>
                         <td class="text-{{$approvalStatus['status'] == LeaveStatus::APPROVED ? 'success' : ($approvalStatus['status'] == LeaveStatus::REJECTED ? 'danger' : 'warning') }} text-center
