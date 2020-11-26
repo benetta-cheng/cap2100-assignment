@@ -73,7 +73,7 @@
             <div class="col">
                 <div class="form-group">
                     <label for="leaveId" class="mr-sm-2">Course:</label>
-                    <input name="course" class="form-control" placeholder="Course Name">
+                    <input name="course" class="form-control" placeholder="Course ID">
                 </div>
             </div>
         </div>
