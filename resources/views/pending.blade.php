@@ -40,8 +40,7 @@
             </div>
             <div class="col">
                 <label for="approvalStatus" class="mr-sm-2">Course:</label>
-                <input name='course' type="text" class="form-control"
-                    aria-label="Text input with segmented dropdown button" placeholder="Course ID">
+                <input name='course' type="text" class="form-control" placeholder="Course ID">
             </div>
         </div>
         <div class="row my-4">
