@@ -116,7 +116,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="3">There is no history</td>
+                    <td colspan="5">There is no history</td>
                 </tr>
                 @endforelse
             </tbody>
