@@ -97,24 +97,26 @@ class HistoryController extends Controller
             }
 
             if ($user->staff_type === UserType::HOP) {
-                $students = $user->programme->student;
-                foreach ($students as $student) {
-                    $leaveApplications = $student->leaveApplication;
+                foreach ($user->programme as $programme) {
+                    $students = $programme->student;
+                    foreach ($students as $student) {
+                        $leaveApplications = $student->leaveApplication;
 
-                    foreach ($leaveApplications as $leave) {
-                        if ($leave->completed()) {
-                            if (isset($leaves[$leave->leave_id])) {
-                                $leaves[$leave->leave_id]['courseId'] .= ' (HOP)';
-                            } else {
-                                $leaves[] = [
-                                    "leaveId" => $leave->leave_id,
-                                    "courseId" => 'HOP',
-                                    "student" => $student->name,
-                                    "status" => $leave->status,
-                                    "createdAt" => $leave->created_at,
-                                    "startDate" => $leave->start_date,
-                                    "endDate" => $leave->end_date
-                                ];
+                        foreach ($leaveApplications as $leave) {
+                            if ($leave->completed()) {
+                                if (isset($leaves[$leave->leave_id])) {
+                                    $leaves[$leave->leave_id]['courseId'] .= ' (HOP)';
+                                } else {
+                                    $leaves[] = [
+                                        "leaveId" => $leave->leave_id,
+                                        "courseId" => 'HOP',
+                                        "student" => $student->name,
+                                        "status" => $leave->status,
+                                        "createdAt" => $leave->created_at,
+                                        "startDate" => $leave->start_date,
+                                        "endDate" => $leave->end_date
+                                    ];
+                                }
                             }
                         }
                     }

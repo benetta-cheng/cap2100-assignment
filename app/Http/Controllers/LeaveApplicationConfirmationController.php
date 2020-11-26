@@ -48,6 +48,9 @@ class LeaveApplicationConfirmationController extends Controller
         $affectedClasses = [];
         $affectedSessions = [];
 
+        //added if statement around for 
+    if ($dateRangeCount > 0){
+
         for ($i = 0; $i <= $dateRangeCount; $i++) {
             $day = date_format($extractDate1, 'l');
 
@@ -86,6 +89,20 @@ class LeaveApplicationConfirmationController extends Controller
             }
             $extractDate1->modify('+1 day');
         }
+    }
+    else if ($dateRangeCount==0){
+        $day = date_format($extractDate1, 'l');
+        $extractTime1 = date("H:i", strtotime(request()->get('startDate')));
+        $extractTime2 = date("H:i", strtotime(request()->get('endDate')));
+        foreach ($sessions as $session) {
+            if ($session->day_of_week == $day) {
+                if ($session->start_time <= $extractTime2 && $session->end_time >= $extractTime1) {
+                    $affectedClasses[] = $session->section->course;
+                    $affectedSessions[] = $session->session_id;
+                }
+            }
+        }
+    }
 
         //Store details that will be passed to UI to display
         $details = [
