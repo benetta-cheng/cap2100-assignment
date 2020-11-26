@@ -14,10 +14,12 @@
 <body>
     <div class="container m-0">
         <div class="row">
-            <div class="col-md-4">
-                <img src="{{ asset('img/INTI_logo.png') }}" alt="IICS Logo" class="img-fluid"
-                    style="max-width: 100%; height: auto;">
-            </div>
+            <a href="{{url('')}}">
+                <div class="col-md-4">
+                    <img src="{{ asset('img/INTI_logo.png') }}" alt="IICS Logo" class="img-fluid"
+                        style="max-width: 100%; height: auto;">
+                </div>
+            </a>
         </div>
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
