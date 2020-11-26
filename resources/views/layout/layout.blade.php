@@ -27,17 +27,38 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Pending Leave</a>
+                @php
+                $navSection = $app->view->getSections()['navSection'] ?? "";
+                @endphp
+                @if(Auth::guard('students')->check())
+                <li class="nav-item {{$navSection == "dashboard" ? "active" : ""}}">
+                    <a class="nav-link" href="{{url('dashboard')}}">Dashboard</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">History</a>
+                <li class="nav-item {{$navSection == "leaveApplication" ? "active" : ""}}">
+                    <a class="nav-link" href="{{url('ApplicationForm')}}">Apply Leave</a>
+                </li>
+                @endif
+                @if(Auth::guard('staff')->check())
+                <li class="nav-item {{$navSection == "pending" ? "active" : ""}}">
+                    <a class="nav-link" href="{{url('pending')}}">Pending Leave</a>
+                </li>
+                @endif
+                <li class="nav-item {{$navSection == "history" ? "active" : ""}}">
+                    <a class="nav-link" href="{{url('history')}}">History</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        John Doe
+                <li class="nav-item active">
+                    <a class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Logout"
+                        href="{{url('logout')}}">
+                        <span class="mr-1">
+                            @if(Auth::guard('staff')->check())
+                            {{Auth::guard('staff')->user()->name}}
+                            @endif
+                            @if(Auth::guard('students')->check())
+                            {{Auth::guard('students')->user()->name}}
+                            @endif
+                        </span>
                         <img src="{{ asset('img/profile.png') }}" alt="profile" width="30" height="30">
                     </a>
                 </li>
@@ -54,6 +75,11 @@
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
     </script>
     @yield('scripts')
 </body>

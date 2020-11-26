@@ -1,15 +1,14 @@
 @extends('layout.layout')
 
 @section('title', 'Dashboard')
-
-{{-- @inject('LeaveStatus', 'App\Enum\LeaveStatus') --}}
+@section('navSection', 'dashboard')
 
 @section('head')
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.2/main.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.2/main.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css" rel="stylesheet" />
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.2/main.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.2/main.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css" rel="stylesheet" />
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
                 
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -62,23 +61,25 @@
         });
         calendar.render();
         });
-    </script>
-    <style>
+</script>
+<style>
+    .fc th {
+        background-color: #DC3545;
+        color: #FFFFFF;
+    }
+
+    @media (min-width: 576px) {
         .fc th {
-            background-color: #DC3545;
-            color: #FFFFFF;
+            padding: .3rem;
         }
-        @media (min-width: 576px) { 
-            .fc th {
-                padding: .3rem;
-            }
-         }
-         @media (min-width: 768px) { 
-            .fc th {
-                padding: .75rem;
-            }
+    }
+
+    @media (min-width: 768px) {
+        .fc th {
+            padding: .75rem;
         }
-    </style>
+    }
+</style>
 @endsection
 
 @section('content')

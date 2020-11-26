@@ -1,6 +1,7 @@
 @extends('layout.layout')
 
 @section('title', 'History Page')
+@section('navSection', 'history')
 
 @section('head')
 <link rel="stylesheet"

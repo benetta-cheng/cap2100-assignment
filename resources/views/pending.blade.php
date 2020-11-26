@@ -1,6 +1,7 @@
 @extends('layout.layout')
 
 @section('title', 'Pending Page')
+@section('navSection', 'pending')
 
 @section('head')
 <link rel="stylesheet"
