@@ -41,7 +41,7 @@ class PendingController extends Controller
         $sections = $user->section;
 
         if ($user->staff_type === UserType::IO) {
-            $students = Student::where('student_type', '=', StudentType::INTERNATIONAL);
+            $students = Student::where('student_type', '=', StudentType::INTERNATIONAL)->get();
 
             foreach ($students as $student) {
                 $leaveApplications = $student->leaveApplication;
