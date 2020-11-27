@@ -40,7 +40,7 @@ class DashboardController extends Controller
             $approvalStatuses[] = [
                 "courses" => implode(", ", $courses),
                 "leaveId" => $leave->leave_id,
-                "status" => strtoupper($leave->status)
+                "status" => $leave->status
             ];
         }
 

@@ -76,7 +76,7 @@ class LeaveController extends Controller
             foreach ($leaveActions as $leaveAction) {
 
                 $individualApprovalStatus = [
-                    "status" => strtoupper($leaveAction->staff_status),
+                    "status" => $leaveAction->staff_status,
                     "remarks" => $leaveAction->remarks
                 ];
 
