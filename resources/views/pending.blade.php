@@ -54,7 +54,9 @@
             <thead>
                 <tr>
                     <th>Leave ID</th>
+                    @if($staffType != UserType::IO)
                     <th class="text-center">Course ID</th>
+                    @endif
                     <th class="text-center">Student</th>
                 </tr>
             </thead>
