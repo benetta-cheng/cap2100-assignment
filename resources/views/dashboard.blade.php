@@ -20,8 +20,8 @@
                     title : '{{$event["leaveId"]}}',
                     start : '{{$event["startDate"]}}',
                     end : '{{$event["endDate"]}}',
-                    backgroundColor : '{{$event["status"] === LeaveStatus::PENDING ? '#FFC107' : ($event["status"] === "Approve" ? '#28A745' : '#DC3545')}}',
-                    borderColor: '{{$event["status"] === "Pending" ? '#FFC107' : ($event["status"] === "Approve" ? '#28A745' : '#DC3545')}}',
+                    backgroundColor : '{{$event["status"] === LeaveStatus::PENDING ? '#FFC107' : ($event["status"] === LeaveStatus::APPROVED ? '#28A745' : '#DC3545')}}',
+                    borderColor: '{{$event["status"] === LeaveStatus::PENDING ? '#FFC107' : ($event["status"] === LeaveStatus::APPROVED ? '#28A745' : '#DC3545')}}',
                     url: '{{url('leave/' . $event["leaveId"])}}'
                 },
                 @endforeach
