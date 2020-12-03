@@ -113,7 +113,8 @@
                     <td
                         class="text-center text-{{$leave['status'] == LeaveStatus::APPROVED ? 'success' : ($leave['status'] == LeaveStatus::REJECTED ? 'danger' : 'warning' )}}">
                         {{$leave['status']}}</td>
-                    <td class="text-center">{{$leave['createdAt']}}</td>
+                    <td class="text-center">{{date('d-m-Y', strtotime($leave['createdAt']))}}</td>
+                    </td>
                 </tr>
                 @empty
                 <tr>
@@ -134,10 +135,12 @@
 <script type="text/javascript">
     $(document).ready(function () {
             $('#datetimepicker1').datetimepicker({
-                format: 'L'
+                format: 'DD-MM-YYYY',
+                useCurrent: false
             });
             $('#datetimepicker2').datetimepicker({
-                format: 'L'
+                format: 'DD-MM-YYYY',
+                useCurrent: false
             });
         });
 </script>

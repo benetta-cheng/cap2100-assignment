@@ -95,10 +95,12 @@
 <script type="text/javascript">
     $(document).ready(function () {
             $('#datetimepicker1').datetimepicker({
-                format: 'L'
+                format: 'DD-MM-YYYY',
+                useCurrent: false
             });
             $('#datetimepicker2').datetimepicker({
-                format: 'L'
+                format: 'DD-MM-YYYY',
+                useCurrent: false
             });
         });
 </script>
