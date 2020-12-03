@@ -135,7 +135,8 @@
     <div class="row my-4">
         <h3 class="col-8">STATUS DETAILS ({{strtoupper($leaveStatus)}})</h3>
         <div class="col-md-4 d-flex justify-content-md-end">
-            @if (!$leave->completed() && $userLeaveStatus != LeaveStatus::APPROVED && $userLeaveStatus != LeaveStatus::REJECTED &&
+            @if (!$leave->completed() && $userLeaveStatus != LeaveStatus::APPROVED && $userLeaveStatus !=
+            LeaveStatus::REJECTED &&
             $userLeaveStatus != LeaveStatus::CANCELLED)
             @if ($userRole == UserType::STUDENT)
             <button class="btn btn-danger" data-toggle="modal" data-target="#cancellationModal">Cancel Leave</button>
@@ -153,7 +154,8 @@
             @elseif ($userRole != UserType::STUDENT)
             <p><em>
                     @if ($userLeaveStatus === LeaveStatus::APPROVED || $userLeaveStatus === LeaveStatus::REJECTED)
-                    You have recommended the {{$userLeaveStatus === LeaveStatus::APPROVED ? "approval" : "rejection"}} of this
+                    You have recommended the {{$userLeaveStatus === LeaveStatus::APPROVED ? "approval" : "rejection"}}
+                    of this
                     leave
                     @else
                     You did not recommend any action for this leave
@@ -280,7 +282,7 @@
                             </div>
                             <span class="col p-0">{{$approvalDetails['approver']}}</span>
                             <span
-                                class="col text-{{$approvalDetails['status'] == LeaveStatus::APPROVED ? 'success' : ($approvalDetails['status'] == LeaveStatus::REJECTED ? 'danger' : 'warning')}} text-right">{{$approvalDetails['status']}}</span>
+                                class="col text-{{$approvalDetails['status'] == LeaveStatus::APPROVED ? 'success' : ($approvalDetails['status'] == LeaveStatus::REJECTED ? 'danger' : 'warning')}} text-right">{{strtoupper($approvalDetails['status'])}}</span>
                         </div>
                         {{-- The paragraph is contained within a div with the collapse class instead of immediately applying the collapse class to the paragraph to prevent jumpy collapsing caused by the margin top --}}
                         <div class="collapse" id="collapseStatus{{$loop->index}}">
@@ -291,7 +293,7 @@
                     <div class="list-group-item d-flex justify-content-between">
                         <span class="ml-4">{{$approvalDetails['approver']}}</span>
                         <span class="text-{{$approvalDetails['status'] == LeaveStatus::APPROVED ? 'success' : ($approvalDetails['status'] == LeaveStatus::REJECTED ? 'danger' : 'warning')}}
-                        ">{{$approvalDetails['status']}}</span>
+                        ">{{strtoupper($approvalDetails['status'])}}</span>
                     </div>
                     @endif
                     @endforeach

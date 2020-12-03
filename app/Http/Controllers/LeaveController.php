@@ -58,7 +58,7 @@ class LeaveController extends Controller
 
                 $course = $section->course;
                 $affectedClasses[] = $course->course_id . " " . $course->course_name;
-            } else if ($user instanceof Staff && $userRole === strtoupper($leaveAction->staff_authority)) {
+            } else if ($user instanceof Staff && $userRole === $leaveAction->staff_authority) {
                 $userLeaveStatus = $leaveAction->staff_status;
             }
         }
