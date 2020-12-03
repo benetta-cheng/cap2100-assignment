@@ -112,7 +112,7 @@
                     <td class="text-center">{{$leave['student']}}</td>
                     @endif
                     <td
-                        class="text-center text-{{$leave['status'] == LeaveStatus::APPROVED ? 'success' : ($leave['status'] == LeaveStatus::REJECTED ? 'danger' : 'warning' )}}">
+                        class="text-center text-{{$leave['status'] == LeaveStatus::PENDING ? 'warning' : ($leave['status'] == LeaveStatus::APPROVED ? 'success' : 'danger' )}}">
                         {{$leave['status']}}</td>
                     <td class="text-center">{{date('d-m-Y', strtotime($leave['createdAt']))}}</td>
                     </td>
