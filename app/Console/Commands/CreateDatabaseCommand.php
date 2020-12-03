@@ -20,7 +20,7 @@ class CreateDatabaseCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Set DB_DATABASE environment variable and create the database. Only run for the first time';
+    protected $description = 'Set RDS_DB_NAME environment variable and create the database. Only run for the first time';
 
     /**
      * Create a new command instance.
@@ -41,14 +41,14 @@ class CreateDatabaseCommand extends Command
     {
 
         file_put_contents(app()->environmentFilePath(), str_replace(
-            'DB_DATABASE=' . Config::get('database.connections.mysql.database'),
-            'DB_DATABASE=cap2100_system',
+            'RDS_DB_NAME=' . Config::get('database.connections.mysql.database'),
+            'RDS_DB_NAME=cap2100_system',
             file_get_contents(app()->environmentFilePath())
         ));
 
-        $this->info("Changed DB_DATABASE environment variable in .env to cap2100_system");
+        $this->info("Changed RDS_DB_NAME environment variable in .env to cap2100_system");
 
-        // Make the table empty first to not specify a table when connecting to the database server
+        // Make the database empty first to not specify a database when connecting to the database server
         Config::set('database.connections.mysql.database', '');
 
         try {
@@ -60,7 +60,7 @@ class CreateDatabaseCommand extends Command
                 DB::connection($connection)->select('CREATE DATABASE ' . $dbname);
                 $this->info("Database '$dbname' created for '$connection' connection");
             } else {
-                $this->info("Database $dbname already exists for $connection connection");
+                $this->info("Database '$dbname' already exists for '$connection' connection");
             }
         } catch (\Exception $e) {
             $this->error($e->getMessage());

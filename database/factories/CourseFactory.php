@@ -29,7 +29,7 @@ class CourseFactory extends Factory
             'Introduction to Cloud Computing',
             'Fundamentals of Trustworthy Computing',
             'Introduction to Data Structure',
-            'Introudction to Mobile Apps Development',
+            'Introduction to Mobile Apps Development',
             'Object-Oriented Programming',
             'Introduction to Business Analytics'
         ];
