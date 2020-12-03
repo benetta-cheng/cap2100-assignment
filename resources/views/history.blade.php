@@ -43,9 +43,10 @@
                     <label for="approvalStatus">Approval Status:</label>
                     <select name="approvalStatus" class="form-control" id="approvalStatus" aria-placeholder="Status">
                         <option style="display:none" disabled selected value>Status</option>
-                        <option>Approved</option>
-                        <option>Pending</option>
-                        <option>Rejected</option>
+                        <option>{{LeaveStatus::APPROVED}}</option>
+                        <option>{{LeaveStatus::PENDING}}</option>
+                        <option>{{LeaveStatus::REJECTED}}</option>
+                        <option>{{LeaveStatus::CANCELLED}}</option>
                     </select>
                 </div>
             </div>
