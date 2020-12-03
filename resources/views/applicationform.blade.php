@@ -156,6 +156,13 @@
              });
         });
 
+        $("#dateOfAbsence1").click(function() {
+            $('#datetimepicker1').datetimepicker('show');
+        });
+        $("#dateOfAbsence2").click(function() {
+            $('#datetimepicker2').datetimepicker('show');
+        });
+
         $("#datetimepicker1").on("change.datetimepicker", function (e) {
             $('#datetimepicker2').datetimepicker('minDate', e.date);
         });

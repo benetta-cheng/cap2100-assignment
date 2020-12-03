@@ -22,16 +22,17 @@
                 <label for="dateApplied" class="mr-sm-2">Absent Period:</label>
                 <div class="row">
                     <div class="col input-group date" id="datetimepicker1" data-target-input="nearest">
-                        <input name="leaveDateFrom" id="dateApplied" type="text"
-                            class="form-control datetimepicker-input" data-target="#datetimepicker1"
-                            placeholder="From" />
+                        <input name="leaveDateFrom" id="dateApplied1" type="text"
+                            class="form-control datetimepicker-input" data-target="#datetimepicker1" placeholder="From"
+                            onkeydown="return false;" />
                         <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
                     </div>
                     <div class="col input-group date" id="datetimepicker2" data-target-input="nearest">
-                        <input name="leaveDateTo" id="dateApplied" type="text" class="form-control datetimepicker-input"
-                            data-target="#datetimepicker2" placeholder="To" />
+                        <input name="leaveDateTo" id="dateApplied2" type="text"
+                            class="form-control datetimepicker-input" data-target="#datetimepicker2" placeholder="To"
+                            onkeydown="return false;" />
                         <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
@@ -142,6 +143,13 @@
             format: 'DD-MM-YYYY',
             useCurrent: false
         });
+    });
+    
+    $("#dateApplied1").click(function() {
+        $('#datetimepicker1').datetimepicker('show');
+    });
+    $("#dateApplied2").click(function() {
+        $('#datetimepicker2').datetimepicker('show');
     });
 
     $("#datetimepicker1").on("change.datetimepicker", function (e) {
