@@ -6,7 +6,8 @@
    b. `copy .env.example .env`  
    c. `php artisan key:generate`  
    d. `php artisan make:database` (After turning on the MySQL server)  
-   e. `php artisan migrate`
+   e. `php artisan migrate`  
+   f. `php artisan db:seed` (Only for first time installation, this will clear the database and generate new data)
 
 # Code Formatting
 
