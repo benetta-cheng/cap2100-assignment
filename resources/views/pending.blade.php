@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="col">
-                <label for="approvalStatus" class="mr-sm-2">Course:</label>
+                <label for="course" class="mr-sm-2">Course:</label>
                 <input name='course' type="text" class="form-control" placeholder="Course ID">
             </div>
         </div>
