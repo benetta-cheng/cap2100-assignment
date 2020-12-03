@@ -4,9 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Section;
 use App\Models\Staff;
-use App\Models\Course;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Enum\UserType;
 
 class SectionFactory extends Factory
@@ -33,7 +31,6 @@ class SectionFactory extends Factory
             'section_id' => "SC" . str_pad($number++, 8, "0", STR_PAD_LEFT),
             'section_name' => strtoupper($this->faker->randomLetter() . mt_rand(1, 9)),
             'lecturer_id' => $this->faker->randomElement($lecturers),
-            //'course_id' => $this->faker->randomElement($courses)
         ];
     }
 }

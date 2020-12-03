@@ -28,7 +28,6 @@ class SessionFactory extends Factory
 
         return [
             'session_id' => "SS" . str_pad($number++, 8, "0", STR_PAD_LEFT),
-            //'section_id' => $this->faker->randomElement($sections),
             'day_of_week' => $this->faker->dayOfWeek(),
             'start_time' => date('H:i:s', $startTime),
             'end_time' => date('H:i:s', $startTime + 60 * 60 * $this->faker->numberBetween(1, 2))

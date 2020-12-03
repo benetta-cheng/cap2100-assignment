@@ -14,7 +14,6 @@ class HistoryController extends Controller
 {
     public function show(Request $request)
     {
-        //Authentication check
         $user = auth()->user();
 
         if ($user instanceof Student) {
@@ -23,14 +22,8 @@ class HistoryController extends Controller
             $userRole = $user->staff_type;
         }
 
-        // $userRole = 'Staff';
-
-        // SELECT * FROM student WHERE student_id = 'J12345678';
-        // $studentUser = Student::find('J12345678');
-        // $staffUser = Staff::find('S0001');
         $leaves = [];
         if ($user instanceof Student) {
-            // SELECT * FROM leave_application WHERE student_id = 'J12345678';
             $leaveApplications = $user->leaveApplication;
 
             foreach ($leaveApplications as $leave) {

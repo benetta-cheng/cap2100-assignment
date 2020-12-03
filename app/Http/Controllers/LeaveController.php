@@ -8,7 +8,6 @@ use App\Models\Student;
 use App\Models\SupportingDocument;
 use Illuminate\Http\Request;
 use App\Enum\LeaveStatus;
-use App\Enum\LeaveType;
 use App\Enum\StudentType;
 use App\Enum\UserType;
 use App\Models\Update;
@@ -17,7 +16,6 @@ class LeaveController extends Controller
 {
     public function show(LeaveApplication $leave)
     {
-        // Authentication check
         $user = auth()->user();
 
         if ($user instanceof Student && $leave->student->is($user)) {

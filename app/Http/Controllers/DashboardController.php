@@ -17,10 +17,7 @@ class DashboardController extends Controller
      */
     public function show()
     {
-        //Authentication check
         $user = auth()->user();
-
-        // $studentUser = Student::find(DashboardController::$studentUserId);
 
         $updates = Update::where('student_id', '=', $user->student_id)->orderBy('created_at', 'desc')->get();
         $leaves = $user->leaveApplication;

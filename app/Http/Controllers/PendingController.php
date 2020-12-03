@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Staff;
 use App\Models\Student;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
 use App\Enum\UserType;
 use App\Enum\StudentType;
 
@@ -15,28 +12,8 @@ class PendingController extends Controller
 {
     public function show(Request $request)
     {
-        //Authentication check
         $user = auth()->user();
 
-        // if ($user->staff_type === UserType::IO) {
-        //     if ($request->student->student_type === StudentType::INTERNATIONAL) {
-        //         $userRole = UserType::IO;
-        //     }
-        // } else if ($user->staff_type === UserType::HOP && $request->student->studentProgramme->headOfProgramme->is($user)) {
-        //     $userRole = UserType::HOP;
-        // } else {
-        //     foreach ($request->leaveActions->where('staff_authority', UserType::LECTURER) as $action) {
-        //         if ($action->session->section->staff->is($user)) {
-        //             $userRole = UserType::LECTURER;
-        //         }
-        //     }
-        // }
-
-
-        // SELECT * FROM student WHERE student_id = 'J12345678';
-        // $staffUser = Staff::find('S0001');
-
-        // $user->leaveApplication;
         $leaves = [];
         $sections = $user->section;
 
