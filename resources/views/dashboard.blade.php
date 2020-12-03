@@ -97,7 +97,7 @@
                         onclick="window.location = '{{url('leave/' . $approvalStatus['leaveId'])}}';">
                         <td>{{$approvalStatus['leaveId']}}</td>
                         <td class="text-center">{{$approvalStatus['courses']}}</td>
-                        <td class="text-{{$approvalStatus['status'] == LeaveStatus::APPROVED ? 'success' : ($approvalStatus['status'] == LeaveStatus::REJECTED ? 'danger' : 'warning') }} text-center
+                        <td class="text-{{$approvalStatus['status'] == LeaveStatus::PENDING ? 'warning' : ($approvalStatus['status'] == LeaveStatus::APPROVED ? 'success' : 'danger') }} text-center
                         ">{{$approvalStatus['status']}}</td>
                     </tr>
                     @empty

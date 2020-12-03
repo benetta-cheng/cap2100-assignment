@@ -155,8 +155,7 @@
             <p><em>
                     @if ($userLeaveStatus === LeaveStatus::APPROVED || $userLeaveStatus === LeaveStatus::REJECTED)
                     You have recommended the {{$userLeaveStatus === LeaveStatus::APPROVED ? "approval" : "rejection"}}
-                    of this
-                    leave
+                    of this leave
                     @else
                     You did not recommend any action for this leave
                     @endif
