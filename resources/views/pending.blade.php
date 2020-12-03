@@ -94,14 +94,21 @@
     crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-            $('#datetimepicker1').datetimepicker({
-                format: 'DD-MM-YYYY',
-                useCurrent: false
-            });
-            $('#datetimepicker2').datetimepicker({
-                format: 'DD-MM-YYYY',
-                useCurrent: false
-            });
+        $('#datetimepicker1').datetimepicker({
+            format: 'DD-MM-YYYY',
+            useCurrent: false
         });
+        $('#datetimepicker2').datetimepicker({
+            format: 'DD-MM-YYYY',
+            useCurrent: false
+        });
+    });
+
+    $("#datetimepicker1").on("change.datetimepicker", function (e) {
+        $('#datetimepicker2').datetimepicker('minDate', e.date);
+    });
+    $("#datetimepicker2").on("change.datetimepicker", function (e) {
+        $('#datetimepicker1').datetimepicker('maxDate', e.date);
+    });
 </script>
 @endsection
