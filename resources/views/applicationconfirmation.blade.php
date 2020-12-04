@@ -13,7 +13,7 @@
 			<div class="col-md-12 pr-0">
 				@if (empty($details['affectedClasses']))
 				<div class="alert alert-danger">
-					<strong>Fail! </strong>No affected Classes! Fail to generate leave application. <a href="#"
+					<strong>No affected classes!</strong> Fail to generate leave application. <a href="#"
 						onclick="history.back()" class="alert-link">Click here to go back</a>.
 				</div>
 				@endif
