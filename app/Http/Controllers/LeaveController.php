@@ -263,10 +263,8 @@ class LeaveController extends Controller
         } else {
             if ($user->staff_type === UserType::IO && $leave->student->student_type === StudentType::INTERNATIONAL) {
                 $permitted = true;
-            } else if ($user->staff_type === UserType::HOP) {
-                if ($leave->student->studentProgramme->headOfProgramme->is($user)) {
-                    $permitted = true;
-                }
+            } else if ($user->staff_type === UserType::HOP && $leave->student->studentProgramme->headOfProgramme->is($user)) {
+                $permitted = true;
             } else {
                 foreach ($leave->leaveActions->where('staff_authority', UserType::LECTURER) as $action) {
                     if ($action->session->section->staff->is($user)) {
