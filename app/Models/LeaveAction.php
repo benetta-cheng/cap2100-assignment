@@ -28,7 +28,7 @@ class LeaveAction extends Model
         return $this->staff_status === LeaveStatus::APPROVED || $this->staff_status === LeaveStatus::REJECTED;
     }
 
-    public function setStatus($status, $remark = null)
+    public function setStatus($status, $remark = null, $sendUpdate = true)
     {
         $this->staff_status = $status;
 
@@ -39,16 +39,18 @@ class LeaveAction extends Model
         }
         $this->save();
 
-        $update = new Update();
-        $update->student_id = $this->leaveApplication->student_id;
-        $update->staff_id = auth()->user()->staff_id;
-        $update->leave_id = $this->leave_id;
+        if ($sendUpdate) {
+            $update = new Update();
+            $update->student_id = $this->leaveApplication->student_id;
+            $update->staff_id = auth()->user()->staff_id;
+            $update->leave_id = $this->leave_id;
 
-        if ($status === LeaveStatus::MEET_STUDENT) {
-            $update->action_message = '[staff] has requested to meet you. (Leave ID: [leaveID])';
-        } else {
-            $update->action_message = '[staff] has recommended the ' . strtolower($status) . " of your leave. (Leave ID: [leaveID]).";
+            if ($status === LeaveStatus::MEET_STUDENT) {
+                $update->action_message = '[staff] has requested to meet you. (Leave ID: [leaveID])';
+            } else {
+                $update->action_message = '[staff] has recommended the ' . strtolower($status) . " of your leave. (Leave ID: [leaveID]).";
+            }
+            $update->save();
         }
-        $update->save();
     }
 }

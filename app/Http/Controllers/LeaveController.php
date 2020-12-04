@@ -130,20 +130,23 @@ class LeaveController extends Controller
                 }
             } else {
 
+                $updatedSent = false;
+
                 $lecturerLeaveActions = $leave->leaveActions->where('staff_authority', UserType::LECTURER);
 
                 // Set approve for lecturer
                 foreach ($lecturerLeaveActions as $leaveAction) {
                     if ($leaveAction->session->section->staff->is($user)) {
                         if (!$leaveAction->completed()) {
-                            $leaveAction->setStatus(LeaveStatus::APPROVED);
+                            $leaveAction->setStatus(LeaveStatus::APPROVED, null, !$updatedSent);
+                            $updatedSent = true;
                         }
                     }
                 }
 
                 // If HOP, set approve for the whole leave application as well
                 if ($user->staff_type === UserType::HOP && $leave->student->studentProgramme->headOfProgramme->is($user)) {
-                    $leave->leaveActions->where('staff_authority', UserType::HOP)->first()->setStatus(LeaveStatus::APPROVED);
+                    $leave->leaveActions->where('staff_authority', UserType::HOP)->first()->setStatus(LeaveStatus::APPROVED, null, !$updatedSent);
                     $leave->setStatus(LeaveStatus::APPROVED);
                 }
             }
@@ -168,20 +171,23 @@ class LeaveController extends Controller
                 }
             } else {
 
+                $updatedSent = false;
+
                 $lecturerLeaveActions = $leave->leaveActions->where('staff_authority', UserType::LECTURER);
 
                 // Set complete for lecturer
                 foreach ($lecturerLeaveActions as $leaveAction) {
                     if ($leaveAction->session->section->staff->is($user)) {
                         if (!$leaveAction->completed()) {
-                            $leaveAction->setStatus(LeaveStatus::REJECTED, $request->post('remarks'));
+                            $leaveAction->setStatus(LeaveStatus::REJECTED, $request->post('remarks'), !$updatedSent);
+                            $updatedSent = true;
                         }
                     }
                 }
 
                 // If HOP, set complete for the whole leave application as well
                 if ($user->staff_type === 'hop' && $leave->student->studentProgramme->headOfProgramme->is($user)) {
-                    $leave->leaveActions->where('staff_authority', UserType::HOP)->first()->setStatus(LeaveStatus::REJECTED, $request->post('remarks'));
+                    $leave->leaveActions->where('staff_authority', UserType::HOP)->first()->setStatus(LeaveStatus::REJECTED, $request->post('remarks'), !$updatedSent);
                     $leave->setStatus(LeaveStatus::REJECTED);
                 }
             }
@@ -206,20 +212,23 @@ class LeaveController extends Controller
                 }
             } else {
 
+                $updatedSent = false;
+
                 $lecturerLeaveActions = $leave->leaveActions->where('staff_authority', UserType::LECTURER);
 
                 // Set complete for lecturer
                 foreach ($lecturerLeaveActions as $leaveAction) {
                     if ($leaveAction->session->section->staff->is($user)) {
                         if (!$leaveAction->completed()) {
-                            $leaveAction->setStatus(LeaveStatus::MEET_STUDENT, $request->post('remarks'));
+                            $leaveAction->setStatus(LeaveStatus::MEET_STUDENT, $request->post('remarks'), !$updatedSent);
+                            $updatedSent = true;
                         }
                     }
                 }
 
                 // If HOP, set complete for the whole leave application as well
                 if ($user->staff_type === UserType::HOP && $leave->student->studentProgramme->headOfProgramme->is($user)) {
-                    $leave->leaveActions->where('staff_authority', UserType::HOP)->first()->setStatus(LeaveStatus::MEET_STUDENT, $request->post('remarks'));
+                    $leave->leaveActions->where('staff_authority', UserType::HOP)->first()->setStatus(LeaveStatus::MEET_STUDENT, $request->post('remarks'), !$updatedSent);
                 }
             }
         }
