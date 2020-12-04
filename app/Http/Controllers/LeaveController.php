@@ -49,13 +49,22 @@ class LeaveController extends Controller
         foreach ($leaveActions as $leaveAction) {
             if ($leaveAction->staff_authority === UserType::LECTURER) {
                 $section = $leaveAction->session->section;
-
-                if ($user instanceof Staff && $section->staff->is($user)) {
-                    $userLeaveStatus = $leaveAction->staff_status;
-                }
-
                 $course = $section->course;
-                $affectedClasses[] = $course->course_id . " " . $course->course_name;
+
+                if ($user instanceof Staff) {
+                    if ($section->staff->is($user)) {
+                        $userLeaveStatus = $leaveAction->staff_status;
+
+                        // User is the lecturer, show them the course
+                        $affectedClasses[] = $course->course_id . " " . $course->course_name;
+                    } else if ($userRole !== UserType::LECTURER) {
+                        // User is not the lecturer but they are IO or HOP
+                        $affectedClasses[] = $course->course_id . " " . $course->course_name;
+                    }
+                } else {
+                    // User is student, show all affected classes
+                    $affectedClasses[] = $course->course_id . " " . $course->course_name;
+                }
             } else if ($user instanceof Staff && $userRole === $leaveAction->staff_authority) {
                 $userLeaveStatus = $leaveAction->staff_status;
             }
