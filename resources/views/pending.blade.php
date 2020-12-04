@@ -81,7 +81,7 @@
     <div class="row">
         <nav class="col" aria-label="Page navigation">
             <ul class="pagination justify-content-end">
-                {{$leaves->links()}}
+                {{$leaves->withQueryString()->links()}}
             </ul>
         </nav>
     </div>

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Enum\UserType;
 use App\Enum\StudentType;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class HistoryController extends Controller
 {
@@ -164,6 +165,14 @@ class HistoryController extends Controller
             }
         }
 
-        return view('history', ["userRole" => $userRole, "leaves" => $leaves]);
+        $perPage = 10;
+        $pageStart = request()->get('page', 1);
+        $offSet = ($pageStart * $perPage) - $perPage;
+
+        $itemsForCurrentPage = array_slice($leaves, $offSet, $perPage, true);
+
+        $paginatedLeaves = new LengthAwarePaginator($itemsForCurrentPage, count($leaves), $perPage, LengthAwarePaginator::resolveCurrentPage(), array('path' => LengthAwarePaginator::resolveCurrentPath()));
+
+        return view('history', ["userRole" => $userRole, "leaves" => $paginatedLeaves]);
     }
 }
