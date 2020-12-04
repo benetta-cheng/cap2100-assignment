@@ -29,6 +29,8 @@ class PendingController extends Controller
                         $leaves[] = [
                             "leaveId" => $leave->leave_id,
                             "student" => $student->name,
+                            "startDate" => $leave->start_date,
+                            "endDate" => $leave->end_date
                         ];
                     }
                 }
@@ -51,7 +53,9 @@ class PendingController extends Controller
                                     $leaves[$leave->leave_id] = [
                                         "leaveId" => $leave->leave_id,
                                         "courseId" => $section->course_id,
-                                        "student" => $leave->student->name
+                                        "student" => $leave->student->name,
+                                        "startDate" => $leave->start_date,
+                                        "endDate" => $leave->end_date
                                     ];
                                 }
                             }
@@ -74,7 +78,9 @@ class PendingController extends Controller
                                     $leaves[] = [
                                         "leaveId" => $leave->leave_id,
                                         "courseId" => 'HOP',
-                                        "student" => $student->name
+                                        "student" => $student->name,
+                                        "startDate" => $leave->start_date,
+                                        "endDate" => $leave->end_date
                                     ];
                                 }
                             }
