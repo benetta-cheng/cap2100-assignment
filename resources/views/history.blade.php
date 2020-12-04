@@ -98,7 +98,11 @@
                     <th class="text-center">Student</th>
                     @endif
                     <th class="text-center">Approval Status</th>
+                    @if ($userRole == UserType::STUDENT)
+                    <th class="text-center">Date Applied</th>
+                    @else
                     <th class="text-center">Date Processed</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -114,7 +118,13 @@
                     <td
                         class="text-center text-{{$leave['status'] == LeaveStatus::PENDING ? 'warning' : ($leave['status'] == LeaveStatus::APPROVED ? 'success' : 'danger' )}}">
                         {{$leave['status']}}</td>
-                    <td class="text-center">{{date('d-m-Y', strtotime($leave['createdAt']))}}</td>
+                    @if ($userRole == UserType::STUDENT)
+                    <td class="text-center">{{$leave['dateApplied']}}</td>
+                    @else
+                    <td class="text-center">
+                        {{empty($leave['processedAt']) ? "-" : date('d-m-Y', strtotime($leave['processedAt']))}}
+                    </td>
+                    @endif
                     </td>
                 </tr>
                 @empty

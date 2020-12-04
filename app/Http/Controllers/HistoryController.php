@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\LeaveStatus;
 use App\Models\LeaveApplication;
 use App\Models\Staff;
 use App\Models\Student;
@@ -32,7 +33,6 @@ class HistoryController extends Controller
                     "leaveId" => $leave->leave_id,
                     "status" => $leave->status,
                     "dateApplied" => $leave->created_at,
-                    "createdAt" => $leave->created_at,
                     "startDate" => $leave->start_date,
                     "endDate" => $leave->end_date
                 ];
@@ -50,7 +50,7 @@ class HistoryController extends Controller
                             "leaveId" => $leave->leave_id,
                             "student" => $student->name,
                             "status" => $leave->status,
-                            "createdAt" => $leave->created_at,
+                            "processedAt" => $leaveAction->staff_status == LeaveStatus::PENDING ? "" : $leaveAction->updated_at,
                             "startDate" => $leave->start_date,
                             "endDate" => $leave->end_date
                         ];
@@ -79,7 +79,7 @@ class HistoryController extends Controller
                                         "courseId" => $section->course_id,
                                         "student" => $leave->student->name,
                                         "status" => $leave->status,
-                                        "createdAt" => $leave->created_at,
+                                        "processedAt" => $action->staff_status == LeaveStatus::PENDING ? "" : $action->updated_at,
                                         "startDate" => $leave->start_date,
                                         "endDate" => $leave->end_date
                                     ];
@@ -101,12 +101,13 @@ class HistoryController extends Controller
                                 if (isset($leaves[$leave->leave_id])) {
                                     $leaves[$leave->leave_id]['courseId'] .= ' (HOP)';
                                 } else {
+                                    $action = $leave->leaveActions->where('staff_authority', UserType::HOP)->first();
                                     $leaves[] = [
                                         "leaveId" => $leave->leave_id,
                                         "courseId" => 'HOP',
                                         "student" => $student->name,
                                         "status" => $leave->status,
-                                        "createdAt" => $leave->created_at,
+                                        "processedAt" => $action->staff_status == LeaveStatus::PENDING ? "" : $action->updated_at,
                                         "startDate" => $leave->start_date,
                                         "endDate" => $leave->end_date
                                     ];
