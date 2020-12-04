@@ -146,14 +146,14 @@ class HistoryController extends Controller
 
             // Name filter
             if ($request->filled('name')) {
-                if (strtoupper($request->get('name')) !== strtoupper($leave['student'])) {
+                if (strpos(strtoupper($leave['student']), strtoupper($request->get('name'))) === false) {
                     unset($leaves[$key]);
                 }
             }
 
             // Course Filter
             if ($request->filled('course')) {
-                if (strtoupper($request->get('course')) !== strtoupper($leave['courseId'])) {
+                if (strpos(strtoupper($leave['courseId']), strtoupper($request->get('course'))) === false) {
                     unset($leaves[$key]);
                 }
             }

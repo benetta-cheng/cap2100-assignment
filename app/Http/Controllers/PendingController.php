@@ -104,7 +104,7 @@ class PendingController extends Controller
 
             // Course Filter
             if ($request->filled('course')) {
-                if (strtoupper($request->get('course')) !== strtoupper($leave['courseId'])) {
+                if (strpos(strtoupper($leave['courseId']), strtoupper($request->get('course'))) === false) {
                     unset($leaves[$key]);
                 }
             }
