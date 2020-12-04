@@ -194,7 +194,7 @@ class LeaveApplicationConfirmationController extends Controller
             $request->session()->forget('leaveType', 'startDate', 'endDate', 'reason', 'supportingDocuments', 'affectedClasses', 'affectedSessions');
         }
 
-        return redirect('/history');
+        return redirect('/leave/' . $leaveAppRecord->leave_id);
     }
 
     public function downloadDoc(Request $request, $filename)
