@@ -6,17 +6,17 @@
 @section('content')
 <div class="container">
 	<div class="row my-4">
-		@if (empty($details['affectedClasses']))
-		<div class="alert alert-danger">
-			<strong>Fail! </strong>No affected Classes! Fail to generate leave application. <a href="#"
-				onclick="history.back()" class="alert-link">Click here to go back</a>.
-		</div>
-		@endif
 		<h3 class="col-8">LEAVE CONFIRMATION</h3>
 	</div>
 	<form action="{{route('ApplicationConfirmation/confirm')}}">
 		<div class="row my-4">
 			<div class="col-md-12 pr-0">
+				@if (empty($details['affectedClasses']))
+				<div class="alert alert-danger">
+					<strong>Fail! </strong>No affected Classes! Fail to generate leave application. <a href="#"
+						onclick="history.back()" class="alert-link">Click here to go back</a>.
+				</div>
+				@endif
 				<div class="card">
 					<div class="card-header">
 						<span>LEAVE DETAILS</span>
