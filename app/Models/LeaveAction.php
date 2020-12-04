@@ -34,6 +34,8 @@ class LeaveAction extends Model
 
         if ($remark === null) {
             $this->remarks = "";
+        } else {
+            $this->remarks = $remark;
         }
         $this->save();
 
