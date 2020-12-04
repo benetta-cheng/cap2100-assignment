@@ -150,10 +150,18 @@
                  format: 'DD-MM-YYYY h:mm A',
                  useCurrent: false
              });
+
              $('#datetimepicker2').datetimepicker({
                  format: 'DD-MM-YYYY h:mm A',
                  useCurrent: false
              });
+
+            $("#datetimepicker1").on("change.datetimepicker", function (e) {
+                $('#datetimepicker2').datetimepicker('minDate', e.date);
+            });
+            $("#datetimepicker2").on("change.datetimepicker", function (e) {
+                $('#datetimepicker1').datetimepicker('maxDate', e.date);
+            });
         });
 
         $("#dateOfAbsence1").click(function() {
@@ -161,13 +169,6 @@
         });
         $("#dateOfAbsence2").click(function() {
             $('#datetimepicker2').datetimepicker('show');
-        });
-
-        $("#datetimepicker1").on("change.datetimepicker", function (e) {
-            $('#datetimepicker2').datetimepicker('minDate', e.date);
-        });
-        $("#datetimepicker2").on("change.datetimepicker", function (e) {
-            $('#datetimepicker1').datetimepicker('maxDate', e.date);
         });
 
         (function() {

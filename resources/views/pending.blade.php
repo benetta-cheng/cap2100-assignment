@@ -103,6 +103,12 @@
             format: 'DD-MM-YYYY',
             useCurrent: false
         });
+        $("#datetimepicker1").on("change.datetimepicker", function (e) {
+            $('#datetimepicker2').datetimepicker('minDate', e.date);
+        });
+        $("#datetimepicker2").on("change.datetimepicker", function (e) {
+            $('#datetimepicker1').datetimepicker('maxDate', e.date);
+        });
     });
 
     $("#dateApplied1").click(function() {
@@ -112,11 +118,5 @@
         $('#datetimepicker2').datetimepicker('show');
     });
 
-    $("#datetimepicker1").on("change.datetimepicker", function (e) {
-        $('#datetimepicker2').datetimepicker('minDate', e.date);
-    });
-    $("#datetimepicker2").on("change.datetimepicker", function (e) {
-        $('#datetimepicker1').datetimepicker('maxDate', e.date);
-    });
 </script>
 @endsection
