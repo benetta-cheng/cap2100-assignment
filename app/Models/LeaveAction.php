@@ -48,7 +48,7 @@ class LeaveAction extends Model
             if ($status === LeaveStatus::MEET_STUDENT) {
                 $update->action_message = '[staff] has requested to meet you. (Leave ID: [leaveID])';
             } else {
-                $update->action_message = '[staff] has recommended the ' . strtolower($status) . " of your leave. (Leave ID: [leaveID]).";
+                $update->action_message = '[staff] has recommended the ' . ($status === LeaveStatus::APPROVED ? "approval" : "rejection") . " of your leave. (Leave ID: [leaveID]).";
             }
             $update->save();
         }
