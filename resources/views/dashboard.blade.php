@@ -61,11 +61,10 @@
 
     .tableUpdates thead th {
         position: sticky;
-        margin-top:0px;
+        margin-top: 0px;
         top: 0;
         background: #DC3545;
     }
-
 </style>
 @endsection
 
@@ -79,7 +78,7 @@
         @isset($newUpdates)
         <div class="col-md-4 pr-0 tableUpdates">
             <table class="table table-bordered table-hover">
-                <thead class="bg-danger text-light">
+                <thead class="bg-primary text-light">
                     <tr>
                         <th>Updates</th>
                     </tr>
@@ -101,7 +100,7 @@
         @isset($approvalStatuses)
         <div class="col">
             <table class="table border-right border-left border-bottom table-hover">
-                <thead class="bg-danger text-light">
+                <thead class="bg-primary text-light">
                     <tr>
                         <th>LEAVE ID</th>
                         <th class="text-center">COURSES</th>

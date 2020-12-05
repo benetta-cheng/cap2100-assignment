@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="col d-flex align-items-end justify-content-end">
-                <button class="btn btn-danger" type="submit">Filter</button>
+                <button class="btn btn-primary" type="submit">Filter</button>
             </div>
         </div>
         @else
@@ -81,7 +81,7 @@
         </div>
         <div class="row my-4">
             <div class="button col offset-12">
-                <button class="btn btn-danger" type="submit">Filter</button>
+                <button class="btn btn-primary" type="submit">Filter</button>
             </div>
         </div>
         @endif

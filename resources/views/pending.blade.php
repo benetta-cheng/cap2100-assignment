@@ -46,7 +46,7 @@
         </div>
         <div class="row my-4">
             <div class="button col offset-11">
-                <button class="btn btn-danger" type="submit">Filter</button>
+                <button class="btn btn-primary" type="submit">Filter</button>
             </div>
         </div>
     </form>
