@@ -1,0 +1,42 @@
+URL: http://cap2100-system.herokuapp.com/
+
+*Password for all accounts: test
+Local Student Account:
+User Id:
+- J00000001
+- J00000002
+- J00000003
+- J00000004
+- J00000005
+- J00000006
+
+International Student Account:
+User Id:
+- J00000007
+- J00000008
+- J00000009
+- J000000010
+- J000000011
+- J000000012
+
+Lecturer Account:
+User Id:
+- S00000001
+- S00000002
+- S00000003
+- S00000004
+- S00000005
+- S00000006
+- S00000007
+
+Head of Programme Account:
+User Id:
+- S00000008
+- S00000009
+
+International Office:
+User Id:
+- S00000010
+
+*Note: This additional testing system is self-hosted by the students of Group 3. Therefore, the validity of the link 
+might expire after four months.
