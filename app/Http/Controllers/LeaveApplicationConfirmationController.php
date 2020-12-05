@@ -151,8 +151,8 @@ class LeaveApplicationConfirmationController extends Controller
 
         // Store supporting documents in database
         if ($request->session()->get('docNames') != null) {
-            $supportingDocumentRecord = new SupportingDocument();
             foreach ($request->session()->get('docNames') as $doc) {
+                $supportingDocumentRecord = new SupportingDocument();
                 $supportingDocumentRecord->leave_id = $leaveID;
                 $supportingDocumentRecord->filename = $doc;
                 $supportingDocumentRecord->save();
