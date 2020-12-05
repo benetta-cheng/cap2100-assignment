@@ -186,7 +186,7 @@ class LeaveController extends Controller
                 }
 
                 // If HOP, set complete for the whole leave application as well
-                if ($user->staff_type === 'hop' && $leave->student->studentProgramme->headOfProgramme->is($user)) {
+                if ($user->staff_type === UserType::HOP && $leave->student->studentProgramme->headOfProgramme->is($user)) {
                     $leave->leaveActions->where('staff_authority', UserType::HOP)->first()->setStatus(LeaveStatus::REJECTED, $request->post('remarks'), !$updatedSent);
                     $leave->setStatus(LeaveStatus::REJECTED);
                 }
