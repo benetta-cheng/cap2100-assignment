@@ -1,3 +1,5 @@
+TESTING WEBSITE
+
 URL: http://cap2100-system.herokuapp.com/
 
 *Password for all accounts: test
@@ -40,3 +42,6 @@ User Id:
 
 *Note: This additional testing system is self-hosted by the students of Group 3. Therefore, the validity of the link 
 might expire after four months.
+
+SAMPLE DATABASE
+The CAP2100_Database.sql file is a MySQL database dump for the sample database. It can be imported into a MySQL database server.
