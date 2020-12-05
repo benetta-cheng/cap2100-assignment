@@ -54,16 +54,17 @@
         }
     }
 
-    .tableUpdates {
+    .updates tbody {
+        display: block;
+        max-height: 400px;
         overflow-y: auto;
-        height: 250px;
     }
 
-    .tableUpdates thead th {
-        position: sticky;
-        margin-top: 0px;
-        top: 0;
-        background: #E20A0D;
+    .updates thead,
+    .updates tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
     }
 </style>
 @endsection
@@ -76,8 +77,8 @@
     </div>
     <div class="row my-4">
         @isset($newUpdates)
-        <div class="col-md-4 pr-0 tableUpdates">
-            <table class="table table-bordered table-hover">
+        <div class="col-md-4">
+            <table class="table table-bordered table-hover updates">
                 <thead class="bg-primary text-light">
                     <tr>
                         <th>Updates</th>
