@@ -38,7 +38,7 @@
 </script>
 <style>
     .fc th {
-        background-color: #DC3545;
+        background-color: #E20A0D;
         color: #FFFFFF;
     }
 
@@ -63,7 +63,7 @@
         position: sticky;
         margin-top: 0px;
         top: 0;
-        background: #DC3545;
+        background: #E20A0D;
     }
 </style>
 @endsection
