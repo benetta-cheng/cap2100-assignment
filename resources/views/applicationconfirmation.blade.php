@@ -51,7 +51,7 @@
 								<ul class="mt-1 list-unstyled">
 									<p class="mt-1">
 										@foreach ($details['supportingDocuments'] as $documentName)
-										<li><a
+										<li><a target="_blank"
 												href="ApplicationConfirmation/download/{{$documentName}}">{{$documentName}}</a>
 										</li>
 										@endforeach

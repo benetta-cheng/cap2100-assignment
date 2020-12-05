@@ -237,7 +237,8 @@
                             <ul class="mt-1 ml-4 list-unstyled">
                                 @foreach ($leave->supportingDocuments as $supportingDocument)
                                 <li>
-                                    <a href="{{$leave->leave_id . '/supportingDocuments/' . $supportingDocument->id}}">
+                                    <a target="_blank"
+                                        href="{{$leave->leave_id . '/supportingDocuments/' . $supportingDocument->id}}">
                                         {{$supportingDocument->filename}}</a>
                                 </li>
                                 @endforeach
