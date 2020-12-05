@@ -118,7 +118,7 @@ class LeaveApplicationConfirmationController extends Controller
         $request->session()->put('affectedClasses', $details['affectedClasses']);
         $request->session()->put('affectedSessions', $affectedSessions);
 
-        return view('ApplicationConfirmation', ['details' => $details]);
+        return view('applicationconfirmation', ['details' => $details]);
     }
 
 

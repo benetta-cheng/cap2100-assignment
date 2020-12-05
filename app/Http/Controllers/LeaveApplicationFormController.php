@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 class LeaveApplicationFormController extends Controller
 {
-    public function index(Request $request){
-         return view('/ApplicationForm');
+    public function index(Request $request)
+    {
+        return view('applicationform');
     }
 }
