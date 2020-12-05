@@ -23,11 +23,11 @@ class DashboardController extends Controller
         $leaves = $user->leaveApplication;
 
         $approvalStatuses = [];
-        foreach ($leaves as $leave) {
+        foreach ($user->leaveApplication->sortByDesc('created_at')->take(6) as $statusLeave) {
 
             $courses = [];
 
-            foreach ($leave->leaveActions->where('staff_authority', UserType::LECTURER) as $action) {
+            foreach ($statusLeave->leaveActions->where('staff_authority', UserType::LECTURER) as $action) {
                 $course_id = $action->session->section->course->course_id;
                 if (!in_array($course_id, $courses)) {
                     $courses[] = $course_id;
@@ -36,8 +36,8 @@ class DashboardController extends Controller
 
             $approvalStatuses[] = [
                 "courses" => implode(", ", $courses),
-                "leaveId" => $leave->leave_id,
-                "status" => $leave->status
+                "leaveId" => $statusLeave->leave_id,
+                "status" => $statusLeave->status
             ];
         }
 

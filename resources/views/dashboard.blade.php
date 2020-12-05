@@ -53,6 +53,19 @@
             padding: .75rem;
         }
     }
+
+    .tableUpdates {
+        overflow-y: auto;
+        height: 250px;
+    }
+
+    .tableUpdates thead th {
+        position: sticky;
+        margin-top:0px;
+        top: 0;
+        background: #DC3545;
+    }
+
 </style>
 @endsection
 
@@ -64,7 +77,7 @@
     </div>
     <div class="row my-4">
         @isset($newUpdates)
-        <div class="col-md-4 table-responsive" style="max-height: 250px;">
+        <div class="col-md-4 pr-0 tableUpdates">
             <table class="table table-bordered table-hover">
                 <thead class="bg-danger text-light">
                     <tr>
@@ -72,11 +85,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($newUpdates as $newUpdate)
+                    @forelse($newUpdates as $newUpdate)
                     <tr style="cursor:pointer" onclick="window.location = '{{url('leave/' . $newUpdate['leaveId'])}}';">
                         <td>{{$newUpdate['message']}}</td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr style="cursor:pointer">
+                        <td>No updates available</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
