@@ -1,6 +1,6 @@
 # Contributing / Installation
 
-1. Run `git clone https://github.com/Jose4fun/CAP2100-System.git`
+1. Run `git clone https://github.com/benetta-cheng/CAP2100-System.git`
 2. Run these commands in order within the CAP2100-System folder  
    a. `composer install`  
    b. `copy .env.example .env`  
